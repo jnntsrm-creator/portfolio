@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HANA TABINO — Portfolio</title>
+  <meta name="description" content="旅と花と洋服が好きな学生のポートフォリオサイト" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream:  '#F7F2E9',
+            paper:  '#FDFBF5',
+            ink:    '#26231C',
+            accent: '#E4572E',
+            petal:  '#E8A0B4',
+            plum:   '#B4637A',
+            sage:   '#7A8B6F',
+            denim:  '#31496B',
+            sand:   '#D9CBB3',
+            gold:   '#D4A24E',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', '"Shippori Mincho"', 'serif'],
+            mincho:  ['"Shippori Mincho"', 'serif'],
+            sans:    ['"Zen Kaku Gothic New"', 'sans-serif'],
+          },
+          letterSpacing: { widest2: '0.35em' },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="font-sans antialiased overflow-x-hidden selection:bg-accent selection:text-cream" data-view="home">
+
+  <!-- ============================================================
+       背景：地球儀（ページごとに姿勢・ピン・ルートが変化）
+  ============================================================= -->
+  <div id="bg-globe" class="fixed inset-0 z-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+    <div id="globe-inner" class="w-[150vmin] h-[150vmin] max-w-none">
+      <svg viewBox="0 0 800 800" class="w-full h-full overflow-visible">
+        <defs>
+          <pattern id="dotgrid" width="15" height="15" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.4" class="g-dot"/>
+          </pattern>
+          <clipPath id="sphereClip"><circle cx="400" cy="400" r="268"/></clipPath>
+          <radialGradient id="sphereGrad" cx="36%" cy="30%" r="80%">
+            <stop offset="0%"  class="g-sphere-hi"/>
+            <stop offset="100%" class="g-sphere-lo"/>
+          </radialGradient>
+        </defs>
+
+        <!-- 球体 -->
+        <circle cx="400" cy="400" r="268" fill="url(#sphereGrad)"/>
+        <!-- 回転レイヤー（装飾のみ回る。ピンとラベルはこの外なので常に正立） -->
+        <g id="globe-rotor">
+          <g clip-path="url(#sphereClip)">
+            <rect x="132" y="132" width="536" height="536" fill="url(#dotgrid)"/>
+          </g>
+          <ellipse cx="400" cy="400" rx="268" ry="86"  fill="none" class="g-line" stroke-width="0.6" opacity="0.7"/>
+          <ellipse cx="400" cy="278" rx="222" ry="56"  fill="none" class="g-line" stroke-width="0.5" opacity="0.45"/>
+          <ellipse cx="400" cy="522" rx="222" ry="56"  fill="none" class="g-line" stroke-width="0.5" opacity="0.45"/>
+          <ellipse cx="400" cy="400" rx="268" ry="268" fill="none" class="g-line" stroke-width="0.55" opacity="0.6">
+            <animate attributeName="rx" values="268;6;268" dur="14s" repeatCount="indefinite"/>
+          </ellipse>
+          <ellipse cx="400" cy="400" rx="150" ry="268" fill="none" class="g-line" stroke-width="0.5" opacity="0.4">
+            <animate attributeName="rx" values="150;268;6;150" dur="14s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+        <circle cx="400" cy="400" r="268" fill="none" class="g-line" stroke-width="1.3"/>
+
+        <!-- 外周オービット＋衛星 -->
+        <g transform="rotate(-16 400 400)">
+          <ellipse cx="400" cy="400" rx="340" ry="332" fill="none" class="g-line" stroke-width="0.7" stroke-dasharray="1 9" opacity="0.7"/>
+          <g class="g-satellite-wrap">
+            <circle cx="740" cy="400" r="4" class="g-satellite"/>
+          </g>
+        </g>
+
+        <!-- 移動ルート（JSで描画） -->
+        <path id="route-path" d="" fill="none" class="g-route" stroke-width="1.6" stroke-linecap="round"/>
+
+        <!-- 都市ピン（HOME=東京 / ABOUT=高知 / CONTACT=次の目的地） -->
+        <g class="g-pin" data-city="home" transform="translate(548,312)">
+          <circle class="pin-pulse" r="7"/><circle class="pin-ring" r="9"/><circle class="pin-dot" r="3.5"/>
+          <text class="pin-label" y="26">TOKYO</text>
+        </g>
+        <g class="g-pin" data-city="about" transform="translate(512,358)">
+          <circle class="pin-pulse" r="7"/><circle class="pin-ring" r="9"/><circle class="pin-dot" r="3.5"/>
+          <text class="pin-label" y="26">KOCHI</text>
+        </g>
+        <g class="g-pin" data-city="contact" transform="translate(352,240)">
+          <circle class="pin-pulse" r="7"/><circle class="pin-ring" r="9"/><circle class="pin-dot" r="3.5"/>
+          <text class="pin-label" y="26">NEXT STOP</text>
+        </g>
+        <!-- Workごとの場所ピン（JSで生成 / WORKSページで可視化） -->
+        <g id="work-pins"></g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       LOADER
+  ============================================================= -->
+  <div id="loader" class="fixed inset-0 z-[100] bg-ink text-cream flex flex-col items-center justify-center">
+    <div class="relative w-[300px] h-[300px]" id="loader-stage">
+      <svg viewBox="0 0 320 320" class="w-full h-full overflow-visible">
+        <circle cx="160" cy="160" r="92" fill="none" stroke="#F7F2E9" stroke-width="1.2"/>
+        <ellipse cx="160" cy="160" rx="92" ry="30" fill="none" stroke="#F7F2E9" stroke-width="0.6" opacity="0.6"/>
+        <ellipse cx="160" cy="160" rx="92" ry="92" fill="none" stroke="#F7F2E9" stroke-width="0.6" opacity="0.65">
+          <animate attributeName="rx" values="92;2;92" dur="5s" repeatCount="indefinite"/>
+        </ellipse>
+        <ellipse cx="160" cy="160" rx="45" ry="92" fill="none" stroke="#F7F2E9" stroke-width="0.6" opacity="0.4">
+          <animate attributeName="rx" values="45;92;2;45" dur="5s" repeatCount="indefinite"/>
+        </ellipse>
+        <circle cx="128" cy="120" r="2.5" fill="#E4572E"/>
+        <circle cx="205" cy="175" r="2.5" fill="#E8A0B4"/>
+        <path id="loader-orbit" d="M 20,160 a 140,58 0 1,0 280,0 a 140,58 0 1,0 -280,0"
+              fill="none" stroke="#F7F2E9" stroke-width="0.8" stroke-dasharray="2 7" opacity="0.5"/>
+        <g id="loader-plane">
+          <path d="M0,-9 L2.4,-2 L10,3 L2.4,3 L0,10 L-2.4,3 L-10,3 L-2.4,-2 Z" fill="#E4572E" transform="rotate(90)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="mt-8 flex flex-col items-center gap-2">
+      <p class="font-display tracking-widest2 text-sm uppercase" id="loader-label">Now Boarding</p>
+      <p class="font-display text-4xl"><span id="loader-count">0</span><span class="text-lg align-top">%</span></p>
+    </div>
+    <p class="absolute bottom-8 text-[10px] tracking-widest2 uppercase opacity-50">Flight HN-2026 &nbsp;/&nbsp; Departure: Portfolio</p>
+  </div>
+
+  <!-- カスタムカーソル -->
+  <div id="cursor-dot" class="hidden md:block"></div>
+  <div id="cursor-ring" class="hidden md:block"></div>
+
+  <!-- ============================================================
+       ページ遷移オーバーレイ
+  ============================================================= -->
+  <div id="transition" class="fixed inset-0 z-[90] pointer-events-none opacity-0">
+    <div class="absolute inset-0" id="transition-veil"></div>
+    <div class="absolute inset-0 flex items-center justify-center" style="perspective:1100px">
+      <div id="plane3d" class="relative" style="transform-style:preserve-3d">
+        <svg viewBox="0 0 120 120" class="w-28 h-28 drop-shadow-2xl">
+          <g transform="rotate(90 60 60)">
+            <path d="M60,8 L68,44 L112,64 L68,64 L60,112 L52,64 L8,64 L52,44 Z" fill="#E4572E"/>
+            <path d="M60,8 L64,44 L60,64 L56,44 Z" fill="#c9431f"/>
+          </g>
+        </svg>
+        <div id="plane3d-trail"></div>
+      </div>
+    </div>
+    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center gap-6 md:gap-12">
+      <div class="text-right">
+        <p class="text-[10px] tracking-widest2 uppercase opacity-50">From</p>
+        <p id="tr-from" class="font-display text-3xl md:text-6xl tracking-wide"></p>
+      </div>
+      <div class="w-16 md:w-40 h-px relative"><span class="absolute inset-0 border-t border-dashed border-current opacity-50"></span></div>
+      <div class="text-left">
+        <p class="text-[10px] tracking-widest2 uppercase opacity-50">To</p>
+        <p id="tr-to" class="font-display text-3xl md:text-6xl tracking-wide text-accent"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- フライト中のキャプション（Workタップ時） -->
+  <div id="flight-caption" aria-hidden="true">
+    <p class="text-[10px] tracking-widest2 uppercase opacity-60">Now Flying To</p>
+    <p id="fc-place" class="font-display text-3xl md:text-5xl tracking-widest text-accent"></p>
+  </div>
+
+  <!-- ============================================================
+       HEADER
+  ============================================================= -->
+  <header id="site-header" class="fixed top-0 inset-x-0 z-50 opacity-0">
+    <nav class="flex items-center justify-between px-6 md:px-10 py-5">
+      <a href="#home" class="nav-link font-display text-xl tracking-widest uppercase" data-nav="home" data-cursor>Hana<span class="text-accent">.</span></a>
+      <ul class="flex items-center gap-6 md:gap-10 text-[11px] md:text-xs tracking-widest2 uppercase">
+        <li><a href="#home"    class="nav-link hover-line" data-nav="home"    data-cursor>Home</a></li>
+        <li><a href="#about"   class="nav-link hover-line" data-nav="about"   data-cursor>About</a></li>
+        <li><a href="#works"   class="nav-link hover-line" data-nav="works"   data-cursor>Works</a></li>
+        <li><a href="#contact" class="nav-link hover-line" data-nav="contact" data-cursor>Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- フライトステータス -->
+  <div id="flight-status" class="fixed bottom-5 left-5 z-40 hidden md:flex items-center gap-3 opacity-0">
+    <span class="relative flex h-2.5 w-2.5">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-60"></span>
+      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent"></span>
+    </span>
+    <div class="leading-tight">
+      <p class="text-[9px] tracking-widest2 uppercase opacity-50">Now at</p>
+      <p id="fs-city" class="font-display text-lg tracking-widest uppercase">Tokyo</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       VIEWS
+  ============================================================= -->
+  <main id="main" class="relative z-10">
+
+    <!-- ===================== HOME ===================== -->
+    <section class="view active" id="view-home">
+      <div class="view-inner min-h-screen w-full flex flex-col justify-center px-6 md:px-16 pt-24 pb-24">
+        <p class="reveal text-xs md:text-sm tracking-widest2 uppercase mb-6 flex items-center gap-3">
+          <span class="inline-block w-10 h-px bg-current"></span>
+          <span id="hero-kicker"></span>
+        </p>
+        <h1 class="font-display leading-[0.9]">
+          <span class="reveal block text-[16vw] md:text-[10vw]">BON</span>
+          <span class="reveal block text-[16vw] md:text-[10vw] md:pl-[8vw]">VOYAGE<span class="text-accent">,</span></span>
+          <span class="reveal block text-[16vw] md:text-[10vw] italic text-accent">WORLD.</span>
+        </h1>
+        <div class="mt-10 max-w-md">
+          <p class="reveal font-mincho text-sm md:text-base leading-loose" id="hero-lead"></p>
+          <p class="reveal mt-4 text-xs tracking-widest uppercase opacity-60" id="hero-name"></p>
+        </div>
+        <button class="reveal group mt-12 inline-flex items-center gap-3 w-fit text-xs tracking-widest2 uppercase" data-nav="about" data-cursor>
+          <span class="hover-line">Start the journey</span>
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-current/40 transition-transform duration-500 group-hover:translate-x-1">
+            <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+      </div>
+      <div class="absolute bottom-0 inset-x-0 border-t border-current/15 py-3 overflow-hidden">
+        <div class="marquee whitespace-nowrap font-display uppercase tracking-widest text-sm opacity-60">
+          <span>Travel the world ✈ &nbsp; Bloom every season ❀ &nbsp; Tailor your story ✂ &nbsp; Based in Kochi, Japan &nbsp;·&nbsp; </span><span>Travel the world ✈ &nbsp; Bloom every season ❀ &nbsp; Tailor your story ✂ &nbsp; Based in Kochi, Japan &nbsp;·&nbsp; </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section class="view" id="view-about">
+      <div class="view-inner px-6 md:px-16 pt-28 md:pt-32 pb-24">
+        <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-plum mb-4">01 — About / Kochi, Where I Bloomed</p>
+        <h2 class="reveal font-display text-[13vw] md:text-[6.5vw] leading-none">
+          FROM BUD<br/><span class="italic text-plum pl-[6vw]">TO BLOOM</span>
+        </h2>
+        <p class="reveal font-mincho mt-8 max-w-xl text-sm md:text-base leading-loose" id="about-lead"></p>
+
+        <div class="reveal mt-14">
+          <div id="profile-card" class="stitched relative max-w-3xl bg-paper/90 text-ink backdrop-blur-sm rounded-2xl p-6 md:p-10 flex flex-col md:flex-row gap-8 items-start">
+            <div class="shrink-0 w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden ring-4 ring-cream shadow-lg rotate-[-3deg]">
+              <img id="profile-avatar" src="" alt="profile" class="w-full h-full object-cover" />
+            </div>
+            <div>
+              <p class="font-display text-3xl md:text-4xl" id="profile-name-en"></p>
+              <p class="font-mincho text-sm mt-1 opacity-70" id="profile-name-ja"></p>
+              <p class="font-mincho text-sm leading-loose mt-5" id="profile-bio"></p>
+              <ul id="profile-keywords" class="flex flex-wrap gap-2 mt-5"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- タイムライン + 花 -->
+        <div class="mt-24 md:mt-28 grid md:grid-cols-[minmax(260px,38%)_1fr] gap-12 md:gap-20" id="timeline-wrap">
+          <div class="hidden md:block flower-col">
+            <div class="flex flex-col items-center justify-center h-[80vh]">
+              <svg id="flower-svg" viewBox="0 0 300 470" class="h-full max-h-[560px] overflow-visible">
+                <defs>
+                  <linearGradient id="petalGrad" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#F6D9E1"/><stop offset="100%" stop-color="#DE93AF"/>
+                  </linearGradient>
+                  <linearGradient id="petalGradIn" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#FBEDF1"/><stop offset="100%" stop-color="#EFB7C9"/>
+                  </linearGradient>
+                  <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#8DA07E"/><stop offset="100%" stop-color="#66795C"/>
+                  </linearGradient>
+                  <radialGradient id="bloomGlow">
+                    <stop offset="0%" stop-color="#E8A0B4" stop-opacity="0.35"/>
+                    <stop offset="100%" stop-color="#E8A0B4" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+
+                <circle id="flower-glow" cx="150" cy="185" r="118" fill="url(#bloomGlow)"/>
+
+                <!-- 茎：しなやかなSカーブ -->
+                <path id="flower-stem" d="M150,455 C140,400 162,352 152,300 C146,268 150,240 150,210"
+                      fill="none" stroke="#66795C" stroke-width="3.2" stroke-linecap="round"/>
+
+                <!-- 葉：葉脈入り -->
+                <g class="flower-leaf">
+                  <path d="M151,360 C116,354 94,332 90,300 C126,304 148,326 151,360 Z" fill="url(#leafGrad)"/>
+                  <path d="M148,356 C130,342 112,324 98,306" fill="none" stroke="#F7F2E9" stroke-width="0.9" opacity="0.6"/>
+                </g>
+                <g class="flower-leaf">
+                  <path d="M153,318 C186,310 206,286 208,256 C174,262 156,286 153,318 Z" fill="url(#leafGrad)"/>
+                  <path d="M156,314 C172,298 188,280 200,264" fill="none" stroke="#F7F2E9" stroke-width="0.9" opacity="0.6"/>
+                </g>
+
+                <!-- 花びら（外層・内層はJSで生成） -->
+                <g id="flower-petals-outer" transform="translate(150,185)"></g>
+                <g id="flower-petals-inner" transform="translate(150,185)"></g>
+
+                <!-- 蕾 -->
+                <g id="flower-bud">
+                  <path d="M150,218 C136,202 136,172 150,152 C164,172 164,202 150,218 Z" fill="url(#petalGrad)" stroke="#B4637A" stroke-width="1"/>
+                  <path d="M150,218 C143,206 143,186 150,170" fill="none" stroke="#B4637A" stroke-width="0.8" opacity="0.6"/>
+                  <path d="M150,218 C144,212 136,210 130,212 C136,204 144,202 150,206 Z" fill="#66795C"/>
+                  <path d="M150,218 C156,212 164,210 170,212 C164,204 156,202 150,206 Z" fill="#66795C"/>
+                </g>
+
+                <!-- 蕊（しべ）：JSで生成 -->
+                <g id="flower-stamens" transform="translate(150,185)"></g>
+              </svg>
+              <p class="mt-4 text-[10px] tracking-widest2 uppercase opacity-50">Blooming Progress</p>
+              <p id="flower-stage" class="font-mincho text-sm mt-1 text-plum"></p>
+            </div>
+          </div>
+          <ol id="timeline-list" class="relative border-l border-current/15 pl-8 md:pl-12 space-y-16 md:space-y-24"></ol>
+        </div>
+
+        <div class="reveal mt-24">
+          <button class="next-dest group" data-nav="works" data-cursor>
+            <span class="text-[10px] tracking-widest2 uppercase opacity-50 block">Next Destination</span>
+            <span class="font-display text-3xl md:text-4xl inline-flex items-center gap-4">The World — Works
+              <svg viewBox="0 0 24 24" class="w-6 h-6 transition-transform duration-500 group-hover:translate-x-2"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WORKS ===================== -->
+    <section class="view" id="view-works">
+      <div class="view-inner min-h-screen px-6 md:px-16 pt-28 md:pt-32 pb-16 flex flex-col">
+        <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-sand mb-4">02 — Works / From Japan to the World</p>
+        <h2 class="reveal font-display text-[13vw] md:text-[6.5vw] leading-none">
+          TAILORED<br/><span class="italic text-sand pl-[6vw]">WORKS</span>
+        </h2>
+        <p class="reveal font-mincho mt-6 max-w-xl text-sm md:text-base leading-loose opacity-90" id="works-lead"></p>
+        <p class="reveal mt-3 text-[10px] tracking-widest2 uppercase opacity-60 flex items-center gap-2">
+          <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="currentColor" transform="rotate(45 12 12)"/></svg>
+          地球儀のピンをクリック — その国のWorkへ飛べます
+        </p>
+
+        <!-- 地球儀ステージ（背景のピンをクリックするための余白） -->
+        <div class="reveal flex items-end justify-center pb-4" style="height:44vh" aria-hidden="true">
+          <p class="text-[10px] tracking-widest2 uppercase opacity-50 flex flex-col items-center gap-2">
+            <span>Closet Archive</span>
+            <svg viewBox="0 0 24 24" class="w-4 h-4 animate-bounce"><path d="M12 4v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </p>
+        </div>
+
+        <p class="reveal text-[10px] tracking-widest2 uppercase opacity-50 flex items-center gap-2">
+          <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          ドラッグ / ホイールでレールをスライド — 服をタップで詳細
+        </p>
+
+        <div class="reveal relative flex-1 mt-4">
+          <div id="closet" class="closet-track">
+            <div class="closet-rail"></div>
+            <div id="garments" class="garments"></div>
+          </div>
+        </div>
+
+        <div class="reveal mt-8">
+          <button class="next-dest group" data-nav="contact" data-cursor>
+            <span class="text-[10px] tracking-widest2 uppercase opacity-50 block">Next Destination</span>
+            <span class="font-display text-3xl md:text-4xl inline-flex items-center gap-4">Next Stop — Contact
+              <svg viewBox="0 0 24 24" class="w-6 h-6 transition-transform duration-500 group-hover:translate-x-2"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section class="view" id="view-contact">
+      <div class="view-inner min-h-screen w-full flex flex-col items-center justify-center text-center px-6 md:px-16 py-28">
+        <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-accent mb-6">03 — Contact / Boarding for the Next Stop</p>
+        <h2 class="reveal font-display text-[12vw] md:text-[7vw] leading-none">LET'S FLY<br/><span class="italic">TOGETHER<span class="text-accent">.</span></span></h2>
+        <p class="reveal font-mincho mt-8 text-sm md:text-base leading-loose max-w-md mx-auto" id="contact-lead"></p>
+        <a id="contact-email" href="#" data-cursor
+           class="reveal boarding-pass group inline-flex items-center gap-4 mt-12 px-8 py-5 bg-ink text-cream rounded-xl relative overflow-hidden">
+          <span class="text-[10px] tracking-widest2 uppercase opacity-60 border-r border-cream/30 pr-4">Boarding Pass</span>
+          <span class="font-display text-xl md:text-2xl tracking-wider" id="contact-email-text"></span>
+          <svg viewBox="0 0 24 24" class="w-5 h-5 transition-transform duration-500 group-hover:translate-x-2 group-hover:-translate-y-1">
+            <path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="#E4572E" transform="rotate(45 12 12)"/>
+          </svg>
+        </a>
+        <ul id="contact-socials" class="reveal flex justify-center gap-8 mt-14 text-xs tracking-widest2 uppercase"></ul>
+        <p id="footer-copy" class="reveal mt-16 text-[10px] tracking-widest2 uppercase opacity-50"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================
+       WORK 詳細モーダル（視認性重視）
+  ============================================================= -->
+  <div id="work-modal" class="modal fixed inset-0 z-[95] hidden items-center justify-center p-4 md:p-8" role="dialog" aria-modal="true">
+    <div id="work-modal-backdrop" class="modal-backdrop absolute inset-0 opacity-0"></div>
+    <div id="work-modal-panel" class="modal-panel relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-paper text-ink rounded-2xl shadow-2xl opacity-0">
+      <button id="work-modal-close" class="modal-close" data-cursor aria-label="閉じる">
+        <svg viewBox="0 0 24 24" class="w-5 h-5"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+
+      <!-- ヒーロー画像 -->
+      <div class="relative h-56 md:h-80">
+        <img id="wm-image" src="" alt="" class="absolute inset-0 w-full h-full object-cover rounded-t-2xl" />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/25 to-transparent rounded-t-2xl"></div>
+        <div class="absolute bottom-5 left-6 md:left-9 text-cream">
+          <p id="wm-category" class="text-[10px] tracking-widest2 uppercase text-sand"></p>
+          <h3 id="wm-title" class="font-display text-4xl md:text-6xl mt-1"></h3>
+        </div>
+        <span id="wm-tag" class="price-tag !absolute top-4 left-6"></span>
+      </div>
+
+      <div class="grid md:grid-cols-[1fr_240px] gap-8 md:gap-10 p-6 md:p-9">
+        <div>
+          <h4 class="wm-h">Overview — 概要</h4>
+          <p id="wm-overview" class="font-mincho text-sm leading-loose mt-3"></p>
+
+          <h4 class="wm-h mt-8">What I did — やったこと</h4>
+          <ul id="wm-did" class="mt-3 space-y-2.5"></ul>
+
+          <h4 class="wm-h mt-8">Gallery</h4>
+          <div id="wm-gallery" class="grid grid-cols-2 gap-3 mt-3"></div>
+
+          <div class="mt-8 border-l-4 border-accent bg-accent/5 rounded-r-xl px-5 py-4">
+            <p class="text-[10px] tracking-widest2 uppercase text-accent">Outcome — 成果</p>
+            <p id="wm-outcome" class="font-mincho text-sm leading-loose mt-2"></p>
+          </div>
+        </div>
+
+        <aside class="md:border-l md:border-ink/10 md:pl-8">
+          <dl class="space-y-5 text-sm">
+            <div><dt class="wm-dt">Place — 場所</dt><dd id="wm-place" class="font-display text-2xl text-accent"></dd></div>
+            <div><dt class="wm-dt">Year</dt><dd id="wm-year" class="font-display text-2xl"></dd></div>
+            <div><dt class="wm-dt">Grade</dt><dd id="wm-grade" class="font-mincho"></dd></div>
+            <div><dt class="wm-dt">Role</dt><dd id="wm-role" class="font-mincho"></dd></div>
+            <div><dt class="wm-dt">Tools</dt><dd><ul id="wm-tags" class="flex flex-wrap gap-2 mt-1.5"></ul></dd></div>
+          </dl>
+          <a id="wm-link" href="#" target="_blank" rel="noopener" data-cursor
+             class="group inline-flex items-center gap-2 mt-8 px-5 py-3 bg-ink text-cream rounded-lg text-[10px] tracking-widest2 uppercase">
+            Visit Project
+            <svg viewBox="0 0 24 24" class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       学年（年次）詳細モーダル
+  ============================================================= -->
+  <div id="year-modal" class="modal fixed inset-0 z-[94] hidden items-center justify-center p-4 md:p-8" role="dialog" aria-modal="true">
+    <div id="year-modal-backdrop" class="modal-backdrop absolute inset-0 opacity-0"></div>
+    <div id="year-modal-panel" class="modal-panel relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-paper text-ink rounded-2xl shadow-2xl opacity-0 p-6 md:p-10">
+      <button id="year-modal-close" class="modal-close" data-cursor aria-label="閉じる">
+        <svg viewBox="0 0 24 24" class="w-5 h-5"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+
+      <p id="ym-tag" class="text-[10px] tracking-widest2 uppercase text-plum"></p>
+      <div class="flex flex-wrap items-baseline gap-x-5 gap-y-1 mt-2">
+        <p id="ym-year" class="font-display text-5xl md:text-6xl"></p>
+        <p id="ym-stage" class="font-mincho text-plum"></p>
+      </div>
+      <h3 id="ym-title" class="font-mincho text-xl md:text-2xl font-semibold mt-4"></h3>
+      <p id="ym-text" class="font-mincho text-sm leading-loose mt-4 opacity-85"></p>
+
+      <h4 class="wm-h mt-9">この年にやったこと</h4>
+      <ul id="ym-activities" class="mt-3 space-y-2.5"></ul>
+
+      <h4 class="wm-h mt-9">この年の制作物 — Related Works</h4>
+      <p id="ym-empty" class="hidden font-mincho text-sm opacity-60 mt-3"></p>
+      <div id="ym-works" class="grid sm:grid-cols-2 gap-4 mt-4"></div>
+    </div>
+  </div>
+
+  <div class="noise-overlay"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

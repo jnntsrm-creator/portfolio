@@ -16,7 +16,7 @@ const SITE_DATA = {
   /* ---------- プロフィール ---------- */
   profile: {
     nameEn: "SAITO EIKA",
-    nameJa: "斎藤 叡華 — 地域協働学部4年",
+    nameJa: "齋藤 叡華 — 地域協働学部4年",
     avatar: "images/avatar.jpg",
     bio: "東京・台東区で生まれ、高知大学 地域協働学部へ。「やりたいことを一つに絞れない」——そんなわたしにぴったりの学部で、地域も、海外も、研究も、興味を持ったことにとことん飛び込んできました。旅とランニングとショッピングが好きです。",
     keywords: ["地域協働", "Fieldwork", "海外プログラム", "地域ブランド", "Travel"],
@@ -285,6 +285,7 @@ let currentView = "home";
 let transitioning = false;
 let suppressHash = false;
 let flightBusy = false;
+let currentWorkIndex = 0;
 
 /* ---------------------------------------------------------------
    1. データ流し込み
@@ -342,7 +343,7 @@ function renderData() {
       <div class="garment-body">
         <span class="work-tag">No.${w.no}</span>
         <div class="garment-img">
-          <img src="${w.image}" alt="${w.title}" loading="lazy" draggable="false" />
+          <img src="${w.image}" alt="${w.title}" loading="lazy" decoding="async" draggable="false" />
           <div class="garment-drape"></div>
         </div>
         <div class="garment-label">
@@ -489,8 +490,11 @@ function enterView(name) {
 function updateNav(name, instant = false) {
   document.body.dataset.view = name;
   document.getElementById("fs-city").textContent = CITY[name].toLowerCase();
-  document.querySelectorAll(".nav-link").forEach(a =>
-    a.classList.toggle("is-current", a.dataset.nav === name));
+  document.querySelectorAll(".nav-link").forEach(a => {
+    const on = a.dataset.nav === name;
+    a.classList.toggle("is-current", on);
+    if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
   document.querySelectorAll(".g-pin").forEach(p =>
     p.classList.toggle("is-active", p.dataset.city === name));
 
@@ -699,10 +703,9 @@ function initFlower() {
     .to("#flower-bud", { scale: 0, opacity: 0, transformOrigin: "50% 100%", duration: 0.8 }, "<+0.6")
     .to("#flower-petals-inner g path", { scale: 0.62, opacity: 1, duration: 2, stagger: 0.18, ease: "back.out(1.4)" }, "-=0.8")
     .to(".stamen", { scale: 1, opacity: 1, duration: 1, stagger: 0.07, ease: "back.out(2)" }, "-=0.5")
-    /* 仕上げ：外層・内層を「同じ角度」だけそっと回す＝36°の互い違いを保ったまま、
-       花全体がふわりと開ききる。左右のずれを生まない対称な着地。 */
-    .to(["#flower-petals-outer", "#flower-petals-inner"], { rotation: 6, transformOrigin: "0px 0px", duration: 2, ease: "sine.inOut" }, "-=0.5")
-    .to("#flower-glow", { scale: 1.08, duration: 1.8, ease: "sine.inOut" }, "<");
+    /* 仕上げ：花びらは回転させない。咲いたら、そのまま静かに整った状態で留まる。
+       （外層0/72/…・内層36/108/… の左右対称な互い違いをそのまま保持） */
+    .to("#flower-glow", { scale: 1.06, duration: 1.6, ease: "sine.inOut" }, "-=0.4");
 
   document.querySelectorAll(".tl-item").forEach(item => {
     gsap.from(item, { y: 50, opacity: 0, duration: 0.9, ease: "power3.out",
@@ -792,9 +795,11 @@ function closeModal(id, onDone) {
 /* ---------------------------------------------------------------
    8. WORK 詳細（地球儀の回転＋ピン刺しモーション付き）
 --------------------------------------------------------------- */
-function openWorkModal(index) {
+/* モーダルの中身を差し替える（開く・前後移動の両方で使う共通処理） */
+function fillWorkModal(index) {
   const w = SITE_DATA.worksList[index];
-  if (!w) return;
+  if (!w) return false;
+  currentWorkIndex = index;
   document.getElementById("wm-image").src = w.image;
   document.getElementById("wm-image").alt = w.title;
   document.getElementById("wm-tag").textContent = `No.${w.no}`;
@@ -813,8 +818,28 @@ function openWorkModal(index) {
   const linkEl = document.getElementById("wm-link");
   linkEl.href = w.link || "#";
   linkEl.classList.toggle("hidden", !w.link || w.link === "#"); /* リンク未設定なら非表示 */
-  openModal("work-modal");
+  const N = SITE_DATA.worksList.length;
+  document.getElementById("wm-counter").textContent =
+    `${String(index + 1).padStart(2, "0")} / ${String(N).padStart(2, "0")}`;
   document.getElementById("work-modal-panel").scrollTop = 0;
+  return true;
+}
+
+function openWorkModal(index) {
+  if (!fillWorkModal(index)) return;
+  openModal("work-modal");
+}
+
+/* 前後のWorkへ（モーダルを閉じずに巡回。← → キー・スワイプ・矢印ボタン共通） */
+function stepWork(dir) {
+  const N = SITE_DATA.worksList.length;
+  const next = (currentWorkIndex + dir + N) % N;
+  const panel = document.getElementById("work-modal-panel");
+  if (prefersReduced || typeof gsap === "undefined") { fillWorkModal(next); return; }
+  gsap.timeline()
+    .to(panel, { opacity: 0, y: 10, duration: 0.16, ease: "power1.in",
+      onComplete: () => fillWorkModal(next) })
+    .fromTo(panel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
 }
 
 /* 地球儀が最前面に出てくるっと回り、その場所にピンが刺さってから詳細がひらく */
@@ -901,10 +926,32 @@ function initModals() {
   document.getElementById("work-modal-backdrop").addEventListener("click", closeWork);
   document.getElementById("year-modal-close").addEventListener("click", () => closeModal("year-modal"));
   document.getElementById("year-modal-backdrop").addEventListener("click", () => closeModal("year-modal"));
+
+  /* Work詳細の前後ナビ：矢印ボタン */
+  document.getElementById("wm-prev").addEventListener("click", () => stepWork(-1));
+  document.getElementById("wm-next").addEventListener("click", () => stepWork(1));
+
   document.addEventListener("keydown", e => {
-    if (e.key !== "Escape") return;
-    if (document.getElementById("work-modal").classList.contains("is-open")) closeWork();
-    else if (document.getElementById("year-modal").classList.contains("is-open")) closeModal("year-modal");
+    const workOpen = document.getElementById("work-modal").classList.contains("is-open");
+    if (e.key === "Escape") {
+      if (workOpen) closeWork();
+      else if (document.getElementById("year-modal").classList.contains("is-open")) closeModal("year-modal");
+    } else if (workOpen && e.key === "ArrowLeft")  { e.preventDefault(); stepWork(-1); }
+    else if (workOpen && e.key === "ArrowRight") { e.preventDefault(); stepWork(1); }
+  });
+
+  /* スマホ：Work詳細を左右スワイプで前後移動（縦スクロールは邪魔しない） */
+  const wpanel = document.getElementById("work-modal-panel");
+  let sx = 0, sy = 0, swiping = false;
+  wpanel.addEventListener("pointerdown", e => {
+    if (e.pointerType !== "touch") return;
+    sx = e.clientX; sy = e.clientY; swiping = true;
+  });
+  wpanel.addEventListener("pointerup", e => {
+    if (!swiping || e.pointerType !== "touch") return;
+    swiping = false;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) stepWork(dx < 0 ? 1 : -1);
   });
 
   document.querySelectorAll(".tl-item").forEach(item => {

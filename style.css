@@ -385,6 +385,37 @@ body[data-view="about"] #petal-field { display: block; }
 #work-modal .modal-close { position: absolute; top: 1rem; right: 1rem; float: none; margin: 0; }
 #year-modal .modal-close { position: absolute; top: 1rem; right: 1rem; float: none; margin: 0; }
 
+/* Work詳細：カウンター（01 / 08） */
+.wm-counter {
+  position: absolute; top: 1.15rem; right: 4.5rem; z-index: 8;
+  font-family: "Cormorant Garamond", serif; font-size: 13px; letter-spacing: 0.18em;
+  color: #F7F2E9; background: rgba(38, 35, 28, 0.42); backdrop-filter: blur(3px);
+  padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(247, 242, 233, 0.25);
+}
+
+/* Work詳細：前後ナビ矢印（モーダルの外側・画面端に固定） */
+.wm-nav {
+  position: fixed; top: 50%; transform: translateY(-50%); z-index: 8;
+  width: 48px; height: 48px; border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(38, 35, 28, 0.55); color: #F7F2E9;
+  border: 1px solid rgba(247, 242, 233, 0.28); backdrop-filter: blur(4px);
+  transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+.wm-nav:hover { background: #E4572E; border-color: #E4572E; transform: translateY(-50%) scale(1.08); }
+.wm-nav:active { transform: translateY(-50%) scale(0.95); }
+.wm-nav-prev { left: clamp(8px, 4vw, 60px); }
+.wm-nav-next { right: clamp(8px, 4vw, 60px); }
+@media (max-width: 767px) {
+  .wm-nav { width: 42px; height: 42px; background: rgba(38, 35, 28, 0.72); }
+  .wm-counter { right: 4rem; font-size: 12px; }
+}
+
+/* キーボード操作時のフォーカス表示（カスタムカーソルでcursor:noneのため必須） */
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, [role="button"]:focus-visible {
+  outline: 2px solid var(--pin); outline-offset: 3px; border-radius: 3px;
+}
+
 .wm-h {
   font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
   color: rgba(38, 35, 28, 0.55);

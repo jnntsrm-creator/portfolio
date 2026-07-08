@@ -4,7 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SAITO EIKA — Portfolio</title>
-  <meta name="description" content="斎藤叡華のポートフォリオ。高知大学 地域協働学部での4年間——地域・海外・研究の旅路を、ひとつの物語に。" />
+  <meta name="description" content="齋藤叡華のポートフォリオ。高知大学 地域協働学部での4年間——地域・海外・研究の旅路を、ひとつの物語に。" />
+  <meta name="author" content="齋藤 叡華 / Saito Eika" />
+  <meta name="theme-color" content="#F7F2E9" />
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="images/favicon.svg" />
+
+  <!-- OGP / Twitter：SNSでシェアした時のプレビュー用 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SAITO EIKA — Portfolio" />
+  <meta property="og:title" content="SAITO EIKA — Portfolio" />
+  <meta property="og:description" content="齋藤叡華のポートフォリオ。東京から高知、そして世界へ。地域協働学部での4年間の旅路。" />
+  <meta property="og:url" content="https://jnntsrm-creator.github.io/portfolio/" />
+  <meta property="og:image" content="https://jnntsrm-creator.github.io/portfolio/images/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="SAITO EIKA — Portfolio" />
+  <meta name="twitter:description" content="東京から高知、そして世界へ。地域協働学部での4年間の旅路。" />
+  <meta name="twitter:image" content="https://jnntsrm-creator.github.io/portfolio/images/og.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -181,9 +200,9 @@
        HEADER
   ============================================================= -->
   <header id="site-header" class="fixed top-0 inset-x-0 z-50 opacity-0">
-    <nav class="flex items-center justify-between px-6 md:px-10 py-5">
+    <nav class="flex items-center justify-between px-4 md:px-10 py-5">
       <a href="#home" class="nav-link font-display text-xl tracking-widest uppercase" data-nav="home" data-cursor>Eika<span class="text-accent">.</span></a>
-      <ul class="flex items-center gap-6 md:gap-10 text-[11px] md:text-xs tracking-widest2 uppercase">
+      <ul class="flex items-center gap-4 md:gap-10 text-[10px] md:text-xs tracking-[0.14em] md:tracking-widest2 uppercase">
         <li><a href="#home"    class="nav-link hover-line" data-nav="home"    data-cursor>Home</a></li>
         <li><a href="#about"   class="nav-link hover-line" data-nav="about"   data-cursor>About</a></li>
         <li><a href="#works"   class="nav-link hover-line" data-nav="works"   data-cursor>Works</a></li>
@@ -414,6 +433,7 @@
           <h3 id="wm-title" class="font-display text-4xl md:text-6xl mt-1"></h3>
         </div>
         <span id="wm-tag" class="price-tag !absolute top-4 left-6"></span>
+        <span id="wm-counter" class="wm-counter" aria-hidden="true"></span>
       </div>
 
       <div class="grid md:grid-cols-[1fr_240px] gap-8 md:gap-10 p-6 md:p-9">
@@ -449,6 +469,14 @@
         </aside>
       </div>
     </div>
+
+    <!-- Work間の前後ナビ（モーダルを閉じずに次の作品へ。← → キーでも移動可） -->
+    <button id="wm-prev" class="wm-nav wm-nav-prev" data-cursor aria-label="前のWorkへ">
+      <svg viewBox="0 0 24 24" class="w-6 h-6"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="wm-next" class="wm-nav wm-nav-next" data-cursor aria-label="次のWorkへ">
+      <svg viewBox="0 0 24 24" class="w-6 h-6"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>
 
   <!-- ============================================================

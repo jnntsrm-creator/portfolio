@@ -269,22 +269,29 @@ body[data-view="about"] #petal-field { display: block; }
 .closet-track::-webkit-scrollbar { height: 6px; }
 .closet-track::-webkit-scrollbar-thumb { background: var(--soft); border-radius: 9999px; }
 
-.closet-rail {
-  position: absolute; top: 58px; left: 0; height: 8px; min-width: 100%; width: max-content;
+.garments {
+  position: relative; display: flex; align-items: flex-start;
+  gap: clamp(18px, 3vw, 52px); width: max-content; padding: 0 8px;
+}
+
+/* ハンガーレール：服の列(.garments)の全幅にわたって伸びる。
+   .garments は width:max-content なので、擬似要素の left/right:0 が
+   最後の服まで含んだ全スクロール幅にぴたりと一致する。
+   （以前は独立要素で表示幅ぶんしか無く、右へスクロールすると
+     服だけが続いて「何もない所にハンガー」に見えていた） */
+.garments::before {
+  content: ""; position: absolute; z-index: 0;
+  top: 12px; left: 0; right: 0; height: 8px;
   background: linear-gradient(180deg, #b9a888, #8f7f60);
   border-radius: 9999px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
-.closet-rail::before, .closet-rail::after {
-  content: ""; position: absolute; top: -6px; width: 14px; height: 20px;
+/* レール両端の壁掛け金具 */
+.garments::after {
+  content: ""; position: absolute; z-index: 0;
+  top: 6px; left: -6px; width: 14px; height: 20px;
   background: #6f6047; border-radius: 4px;
-}
-.closet-rail::before { left: -6px; }
-.closet-rail::after  { right: -6px; }
-
-.garments {
-  position: relative; display: flex; align-items: flex-start;
-  gap: clamp(18px, 3vw, 52px); width: max-content; padding: 0 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .garment {
@@ -364,6 +371,8 @@ body[data-view="about"] #petal-field { display: block; }
    モーダル共通
 ------------------------------------------------------------ */
 .modal.is-open { display: flex; }
+/* パネル内スクロールを背面へ伝播させない（タッチ端末での取りこぼし防止） */
+.modal-panel { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 .modal-backdrop { background: rgba(28, 25, 20, 0.72); backdrop-filter: blur(3px); }
 .modal-close {
   position: sticky; top: 1rem; float: right; margin: 1rem 1rem 0 0; z-index: 10;

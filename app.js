@@ -15,78 +15,77 @@ const SITE_DATA = {
 
   /* ---------- プロフィール ---------- */
   profile: {
-    nameEn: "HANA TABINO",
-    nameJa: "旅野 はな — 大学4年生",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=80&auto=format&fit=crop",
-    bio: "高知を拠点に、旅先の空気、季節の花、土地の食と人に出会いながら学んできました。フィールドワークで見つけた「好き」を、デザインとことばに仕立てています。",
-    keywords: ["Fieldwork", "Gastronomy", "Local Design", "Photography", "Travel Writing"],
+    nameEn: "SAITO EIKA",
+    nameJa: "斎藤 叡華 — 地域協働学部4年",
+    avatar: "images/avatar.jpg",
+    bio: "東京・台東区で生まれ、高知大学 地域協働学部へ。「やりたいことを一つに絞れない」——そんなわたしにぴったりの学部で、地域も、海外も、研究も、興味を持ったことにとことん飛び込んできました。旅とランニングとショッピングが好きです。",
+    keywords: ["地域協働", "Fieldwork", "海外プログラム", "地域ブランド", "Travel"],
   },
 
   /* ---------- HOME ---------- */
   hero: {
     kicker: "Portfolio of a wandering student",
     lead: "東京で生まれ、高知で学び、世界へ。大学4年間のフィールドワークと実習の軌跡を、ひとつの旅路としてまとめました。",
-    name: "Hana Tabino — Portfolio 2026",
+    name: "Saito Eika — Portfolio 2026",
   },
 
   /* ---------- ABOUT ---------- */
   about: {
-    lead: "1年生の春、わたしはまだ固い蕾でした。年をクリックすると、その年の記録とWorkがひらきます。",
+    lead: "1年生の春、わたしはまだ固い蕾でした。地域も、海外も、研究も——興味を持ったことにとことん飛び込んだ4年間。年をクリックすると、その年の記録とWorkがひらきます。",
   },
 
   /* ---------- タイムライン（activities＝その年にやったこと） ---------- */
   timeline: [
     {
       id: "y1", year: "2022", grade: "1年生", stage: "蕾のとき",
-      title: "はじめての離陸", tag: "SEED & BUD",
-      text: "高知での大学生活がスタート。スイスのサマースクールで初めて海を越え、須崎のスプリングスクールで地域に飛び込む。固い蕾の中に、旅の種が蒔かれた一年。",
+      title: "いきなり、世界へ", tag: "SEED & BUD",
+      text: "入学してすぐの夏、国際協働演習の授業でスイスへ。サマースクールで海を越え、そのままイタリア・サルディーニャ島で1か月半のホームステイ。春には須崎スプリングスクールで、防災の提案が実際のイベントとして形になった。固い蕾に、旅の種が一気に芽吹いた一年。",
       activities: [
-        "スイス・サマースクールに参加、初めての海外で視野がひらく",
-        "須崎スプリングスクール（1回目）で地域フィールドワークを初体験",
-        "基礎ゼミで「地域と食」に興味を持つ",
-        "フリーコーヒーの活動に出会い、メンバーに",
+        "スイスでの国際協働演習サマースクール（10日間）に参加。イタリア・日本の学生と英語で防災を議論・提案",
+        "サマースクール後、イタリア・サルディーニャ島へ。知人宅で約1か月半のホームステイ",
+        "須崎スプリングスクールに参加。防災の提案が採択され、地域のイベントとして実現",
       ],
     },
     {
       id: "y2", year: "2023", grade: "2年生", stage: "ほころびはじめ",
-      title: "足元の高知を歩く", tag: "FIRST STEPS",
-      text: "遠くへ行く前に、まず足元から。てくてく高知プロジェクトで県内を歩きまわり、フリーコーヒーで人と話す。ローカルの面白さに目覚めた一年。",
+      title: "高知に留まらない学び", tag: "FIRST STEPS",
+      text: "実習と研究が本格スタート。えひめ・こうち食べる通信、フリーコーヒー、てくてく高知——地域に飛び込む活動を次々と。夏は愛知県半田市のサマースクール、そしてタイでのフィールドワークへ。高知の外にも学びの畑を広げた一年。",
       activities: [
-        "てくてく高知プロジェクトで県内の町を歩いて記録",
-        "フリーコーヒーを学内外で定期開催、対話の場づくりを学ぶ",
-        "須崎スプリングスクール（2回目）にスタッフ側で参加",
-        "写真と文章での記録手法を独学で磨く",
+        "えひめ・こうち食べる通信、フリーコーヒー、てくてく高知など実習・研究を開始",
+        "愛知県半田市のサマースクールに参加（食と地域を学ぶ）",
+        "タイでフィールドワークを実施。地域協働チャレンジ演習として企画・実施・報告し、単位を取得",
+        "須崎スプリングスクールに継続参加",
       ],
     },
     {
       id: "y3", year: "2024", grade: "3年生", stage: "五分咲き",
-      title: "食で世界とつながる", tag: "HALF BLOOM",
-      text: "タイでのガストロノミーフィールドワークで「食は土地の物語だ」と確信。えひめ・こうち食べる通信の編集実習で、生産者のことばを届ける仕事を経験した一年。",
+      title: "実習の成果が、見えはじめる", tag: "HALF BLOOM",
+      text: "続けてきた実習が、少しずつ形に。食べる通信の記事執筆、フリーコーヒーから広がったおにぎり販売、てくてく四万十の完成、てくてく高知のクラウドファンディング。海外と地域、両方の学びが評価されて二つの資格も取得。就職活動もはじまった一年。",
       activities: [
-        "タイ・ガストロノミーフィールドワークで現地の食文化を調査",
-        "えひめ・こうち食べる通信の編集実習に参加",
-        "須崎スプリングスクール（3回目）で企画運営を担当",
-        "フィールドノートをZINEにまとめて学内で頒布",
+        "食べる通信の取材に同行し記事を執筆。note・動画でも発信",
+        "フリーコーヒーをおにぎり販売プロジェクトへ展開（商店街・夜市で販売）",
+        "「てくてく四万十」を完成、「てくてく高知」はクラウドファンディングで資金調達（現在も継続中）",
+        "地方創生推進士・グローカル創生推進士を取得",
+        "「戦略」と「地域ブランド（地域活性化）」を軸に就職活動を開始",
       ],
     },
     {
       id: "y4", year: "2025", grade: "4年生", stage: "開花",
-      title: "イタリアで学ぶ、大輪の一年", tag: "FULL BLOOM",
-      text: "イタリア留学で食科学と地域デザインを学ぶ。4年間で集めた旅と実習の記録を、このポートフォリオに仕立てた。花はいま、いちばん大きくひらいている。",
+      title: "東京から高知、そして世界へ", tag: "FULL BLOOM",
+      text: "就職活動では、実習で培ったマインド・協働力・課題解決力が高く評価され、大手企業から内定。「地域協働学部での学びは唯一無二」と胸を張れた。そして卒業までの日々は、ずっと憧れていたイタリア・サルディーニャ島への交換留学へ。花はいま、いちばん大きくひらいている。",
       activities: [
-        "イタリア留学（食科学・地域デザインを学ぶ）",
-        "留学中に各地の市場と食堂をフィールドワーク",
-        "卒業研究「食と地域の物語のデザイン」に着手",
-        "このポートフォリオサイトを自分の手でコーディング",
+        "就職活動で実習・研究・海外経験が高く評価され内定（大手小売企業／大手損害保険会社）",
+        "「地域協働学部での学びは唯一無二」と面接で高く評価される",
+        "イタリア・サルディーニャ島へ交換留学（卒業まで）",
       ],
     },
     {
       id: "y5", year: "2026", grade: "そして未来へ", stage: "満開、その先へ",
-      title: "次の目的地へ搭乗", tag: "NEXT JOURNEY",
-      text: "咲いた花は、やがて種を飛ばす。高知で学んだローカルの目と、世界で得た視野を持って、次の空へ。搭乗ゲートはもう開いています。",
+      title: "次の目的地へ、搭乗", tag: "NEXT JOURNEY",
+      text: "咲いた花は、やがて種を飛ばす。地域協働学部で得た「濃くて、唯一無二」の学びを胸に、地域と世界をつなぐ仕事へ。搭乗ゲートは、もう開いている。",
       activities: [
-        "「食×地域×デザイン」をライフワークに、社会へ離陸予定",
-        "世界のローカルを巡る旅の続きへ",
+        "「戦略」と「地域ブランド」を軸に、地域と世界をつなぐ仕事へ",
+        "旅とフィールドワークの続きは、これからも",
       ],
     },
   ],
@@ -101,148 +100,142 @@ const SITE_DATA = {
     {
       id: "w1", no: "01", title: "SUMMER SCHOOL", category: "海外プログラム",
       gradeIds: ["y1"], year: "2022", role: "参加学生",
-      place: { label: "SWITZERLAND", x: 268, y: 278 },
-      description: "スイスでの国際サマースクール。初めての海外。",
-      detail: "1年生の夏、スイスで開催された国際サマースクールに参加。各国の学生と寮生活を送りながら、サステナビリティと観光をテーマにフィールド調査を行いました。英語での議論に食らいつく毎日が、「世界はこんなに広い」という原体験になりました。",
+      place: { label: "SWITZERLAND", x: 250, y: 250 },
+      description: "入学直後の夏、スイスでの国際協働サマースクールへ。",
+      detail: "1年生の夏休み、国際協働演習の授業でスイスへ渡航。サマースクールに10日間参加し、イタリアや日本の大学生とチームを組んで、英語で「地域における防災」を議論・提案しました。入学してすぐ海を越えた10日間が、その後の海外への扉を開いてくれました。",
       did: [
-        "各国の学生との混成チームでフィールド調査",
-        "山岳地域の観光と環境保全についての事例研究",
-        "最終プレゼンテーションを英語で実施",
+        "各国の学生との混成チームで地域防災を研究",
+        "防災に関する提案を英語でプレゼンテーション",
+        "寮生活で多国籍の仲間と寝食を共にする",
       ],
-      outcome: "初めての海外経験が、その後の4年間の旅と学びの原点に。",
-      image: "https://images.unsplash.com/photo-1531210483974-4f8c1f33fd35?w=1200&q=80&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80&auto=format&fit=crop",
-      ],
-      tags: ["International", "Sustainability", "English"], link: "#",
+      outcome: "「いきなり世界へ」飛び込んだ経験が、4年間の旅と挑戦の原点に。",
+      image: "images/w1.jpg",
+      gallery: ["images/w1a.jpg", "images/w1b.jpg"],
+      tags: ["International", "防災", "English"], link: "",
     },
     {
-      id: "w2", no: "02", title: "SPRING SCHOOL", category: "国内プログラム",
-      gradeIds: ["y1", "y2", "y3"], year: "2022–2024", role: "参加者 → スタッフ → 企画運営",
-      place: { label: "SUSAKI, JAPAN", x: 556, y: 452 },
-      description: "須崎で毎春開催される地域滞在型プログラムに3年連続参加。",
-      detail: "高知県須崎市で毎年春に開催される地域滞在型のスプリングスクール。1年生では参加者として、2年生ではスタッフとして、3年生では企画運営側として、立場を変えながら3年連続で関わりました。同じ町に通い続けたからこそ見えた、地域の変化と人のつながりが財産です。",
+      id: "w2", no: "02", title: "HOMESTAY IN ITALY", category: "海外・ホームステイ",
+      gradeIds: ["y1"], year: "2022", role: "ホームステイ",
+      place: { label: "ITALY", x: 210, y: 432 },
+      description: "サマースクール後、イタリアの知人宅で約1か月半のホームステイ。",
+      detail: "スイスのサマースクールを主催していた大学があるイタリア・サルディーニャ島へ。せっかく海を渡ったのだからと、そのまま約1か月半、イタリアの知人の家でホームステイをさせてもらいました。暮らしの中で触れたイタリアの文化と人のあたたかさが、「またイタリアへ」という思いのはじまりでした。",
       did: [
-        "1年目：参加者として地域課題フィールドワーク",
-        "2年目：運営スタッフとして参加者をサポート",
-        "3年目：プログラムの企画設計と当日運営を担当",
+        "イタリアの家庭で約1か月半の生活を共にする",
+        "現地の暮らし・食・言葉を肌で学ぶ",
+        "小学生の頃から続くイタリアとの縁をさらに深める",
       ],
-      outcome: "3年間の継続参加で、地域との長期的な関係づくりを実践的に学んだ。",
-      image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=800&q=80&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?w=800&q=80&auto=format&fit=crop",
-      ],
-      tags: ["Local", "Community", "Facilitation"], link: "#",
+      outcome: "このホームステイが、4年生での交換留学へとつながっていく。",
+      image: "images/w2.jpg",
+      gallery: ["images/w2a.jpg", "images/w2b.jpg"],
+      tags: ["Italy", "Homestay", "異文化"], link: "",
     },
     {
-      id: "w3", no: "03", title: "GASTRONOMY FIELDWORK", category: "フィールドワーク",
-      gradeIds: ["y3"], year: "2024", role: "調査・記録担当",
-      place: { label: "THAILAND", x: 426, y: 486 },
-      description: "タイの食文化を巡るガストロノミーフィールドワーク。",
-      detail: "3年生の夏、タイでのガストロノミーフィールドワークに参加。バンコクの市場から地方の農村まで、「食」を切り口に土地の暮らしと経済を調査しました。屋台の一皿の背景にある流通、信仰、家族の物語。食は土地を読み解く最高のレンズだと確信した旅でした。",
+      id: "w3", no: "03", title: "SPRING SCHOOL", category: "国内プログラム",
+      gradeIds: ["y1", "y2", "y3"], year: "2022–2024", role: "参加者（3年連続）",
+      place: { label: "SUSAKI, JAPAN", x: 430, y: 178 },
+      description: "高知県須崎市の地域滞在型プログラムに毎春参加。",
+      detail: "高知県須崎市で毎年春に開かれるスプリングスクールに、1〜3年生まで参加。1年生のときは、イタリア・中国の学生とともに防災の提案を行い、須崎市へプレゼンテーション。この提案が採択され、須崎の小中高生も関わる「Light up the Life! —須崎に希望の灯をともそう—」というイベントとして実際に形になりました。",
       did: [
-        "市場・屋台・農村での参与観察とインタビュー",
-        "食材の流通経路のマッピング",
-        "写真と文章によるフィールドノート制作",
+        "多国籍の学生と須崎地区の防災を提案",
+        "須崎市へのプレゼンテーションを実施",
+        "提案がイベント化し、地域の小中高生と協働",
       ],
-      outcome: "調査記録をまとめたレポートがゼミの優秀フィールドワークに選出。",
-      image: "https://images.unsplash.com/photo-1528181304800-259b08848526?w=1200&q=80&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80&auto=format&fit=crop",
-      ],
-      tags: ["Gastronomy", "Research", "Thailand"], link: "#",
+      outcome: "学生の提案が、津波避難場所を灯すリアルなイベントとして実現。",
+      image: "images/w3.jpg",
+      gallery: ["images/w3a.jpg", "images/w3b.jpg"],
+      tags: ["須崎", "防災", "地域協働"], link: "",
     },
     {
-      id: "w4", no: "04", title: "STUDY IN ITALY", category: "留学",
-      gradeIds: ["y4"], year: "2025", role: "交換留学生",
-      place: { label: "ITALY", x: 322, y: 398 },
-      description: "イタリアでの留学。食科学と地域デザインを学ぶ。",
-      detail: "4年生でイタリアへ留学。食科学（ガストロノミック・サイエンス)と地域デザインを学びながら、週末は各地の市場、ワイナリー、小さな食堂を巡りました。「土地のものを、土地の物語とともに食べる」文化の厚みに触れ、卒業研究のテーマが決まった、いちばん大きな一年です。",
+      id: "w4", no: "04", title: "FIELDWORK", category: "フィールドワーク",
+      gradeIds: ["y2"], year: "2023", role: "企画・調査・報告",
+      place: { label: "THAILAND", x: 486, y: 590 },
+      description: "愛知県半田市とタイで、食と地域のフィールドワーク。",
+      detail: "2年生の夏休みは、高知の外へ。まず愛知県半田市のサマースクールで食と地域を学び、続けてタイでフィールドワークを実施しました。地域協働チャレンジ演習の枠組みを活用して、自分たちで授業を企画・実施・報告し、単位も取得。国内も海外も、食を入り口に土地の暮らしを読み解いた夏でした。",
       did: [
-        "食科学・地域デザインの講義とワークショップを履修",
-        "各都市の市場と食堂のフィールドワーク（20都市以上）",
-        "現地学生との共同プロジェクトでローカル食材のプロモーション企画",
+        "愛知県半田市のサマースクールに参加（食と地域）",
+        "タイでのフィールドワークを企画・実施",
+        "地域協働チャレンジ演習として報告し単位を取得",
       ],
-      outcome: "帰国後、卒業研究「食と地域の物語のデザイン」として結実。",
-      image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1200&q=80&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=800&q=80&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=800&q=80&auto=format&fit=crop",
-      ],
-      tags: ["Study Abroad", "Food Science", "Italy"], link: "#",
+      outcome: "「高知に留まらない学び」を、自分の手でデザインして形にした。",
+      image: "images/w4.jpg",
+      gallery: ["images/w4a.jpg", "images/w4b.jpg"],
+      tags: ["Thailand", "半田", "食"], link: "",
     },
     {
       id: "w5", no: "05", title: "えひめ・こうち食べる通信", category: "実習",
-      gradeIds: ["y3"], year: "2024", role: "編集実習生",
-      place: { label: "EHIME / KOCHI", x: 478, y: 296 },
+      gradeIds: ["y2", "y3"], year: "2023–2024", role: "編集・取材",
+      place: { label: "EHIME / KOCHI", x: 640, y: 344 },
       description: "食べもの付き情報誌の編集実習。生産者を取材して記事に。",
-      detail: "食べもの付き情報誌「えひめ・こうち食べる通信」での編集実習。生産者さんの畑や漁港に通い、話を聞き、写真を撮り、記事に仕立てる。一次産業の現場のことばを、食卓に届くことばに翻訳する仕事を経験しました。",
+      detail: "食べもの付き情報誌「えひめ・こうち食べる通信」の実習に参加。第一次産業に携わる方々を取材し、記事と食べものを読者へ届ける活動です。セキ株式会社や愛媛大学と協働しながら、取材に同行して記事を執筆し、noteや動画でも活動を発信しました。一次産業の現場のことばを、食卓に届くことばへ翻訳する仕事です。",
       did: [
-        "農家・漁師さんへの取材（同行取材含む）",
-        "誌面記事の執筆と写真撮影",
-        "読者向けイベントの運営補助",
+        "生産者への取材に同行し、記事を執筆",
+        "note・動画で活動を発信",
+        "セキ株式会社・愛媛大学と協働して実施",
       ],
-      outcome: "担当した特集記事が誌面に掲載。取材先の生産者さんとは今も交流が続く。",
-      image: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=1200&q=80&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800&q=80&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&q=80&auto=format&fit=crop",
-      ],
-      tags: ["Editorial", "Interview", "Local Food"], link: "#",
+      outcome: "取材から発信まで、「伝える」一連の流れを実践的に経験。",
+      image: "images/w5.jpg",
+      gallery: ["images/w5a.jpg", "images/w5b.jpg"],
+      tags: ["編集", "取材", "地域の食"], link: "",
     },
     {
-      id: "w6", no: "06", title: "てくてく高知プロジェクト", category: "実習",
-      gradeIds: ["y2"], year: "2023", role: "企画・記録",
-      place: { label: "KOCHI", x: 584, y: 352 },
-      description: "高知の町を歩いて記録するローカルプロジェクト。",
-      detail: "「車ではなく、歩く速さで高知を見る」をテーマに、県内の商店街や港町をてくてく歩いて記録するプロジェクト。歩くからこそ出会える人、看板、路地の風景をマップと小さな冊子にまとめました。足元のローカルの解像度が一気に上がった実習です。",
+      id: "w6", no: "06", title: "FREE COFFEE", category: "実習",
+      gradeIds: ["y2", "y3"], year: "2023–2024", role: "メンバー",
+      place: { label: "KOCHI", x: 560, y: 240 },
+      description: "一杯のコーヒーで、対話の場をつくる活動。",
+      detail: "学内・学外にテーブルを出し、無料のコーヒーを淹れて通りがかりの人と話す活動。複数回の開催を重ねる中で、おにぎりの販売プロジェクトへも派生し、商店街や夜市でも販売を行いました。目的のない対話からこぼれる本音や物語こそが、フィールドワークの原点でした。",
       did: [
-        "県内5エリアのまち歩きルート設計と実地調査",
-        "出会った人・店・風景の写真とテキストでの記録",
-        "まち歩きマップと記録冊子の制作",
+        "学内・学外でフリーコーヒーを複数回開催",
+        "おにぎり販売プロジェクトへ展開",
+        "商店街や夜市で販売・出店",
       ],
-      outcome: "制作したまち歩きマップが地域のイベントで配布された。",
-      image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=800&q=80&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=800&q=80&auto=format&fit=crop",
-      ],
-      tags: ["Fieldwork", "Mapping", "ZINE"], link: "#",
+      outcome: "「話を聴く」姿勢が、すべての取材・調査の土台になった。",
+      image: "images/w6.jpg",
+      gallery: ["images/w6a.jpg", "images/w6b.jpg"],
+      tags: ["対話", "コーヒー", "地域"], link: "",
     },
     {
-      id: "w7", no: "07", title: "FREE COFFEE", category: "実習",
-      gradeIds: ["y1", "y2"], year: "2022–2023", role: "メンバー → 主催",
-      place: { label: "KOCHI CAMPUS", x: 500, y: 548 },
-      description: "一杯のコーヒーで対話の場をつくる活動。",
-      detail: "キャンパスや商店街の一角にテーブルを出し、無料のコーヒーを淹れて、通りがかりの人と話す。それだけの活動です。でも「目的のない対話」からこぼれる本音や物語こそが、フィールドワークの原点でした。1年生で出会い、2年生では自分が主催する側に。",
+      id: "w7", no: "07", title: "てくてく高知・四万十", category: "実習・PJ",
+      gradeIds: ["y2", "y3"], year: "2023–2024", role: "企画・制作",
+      place: { label: "SHIMANTO / KOCHI", x: 610, y: 516 },
+      description: "歩いて地域の店をめぐり、店舗紹介カードをつくるプロジェクト。",
+      detail: "地域内の経済循環率を上げることを目的に、お店へ足を運んでもらうきっかけをつくる「てくてく」プロジェクト。店舗紹介カードを制作し、学校や町役場、イベントで掲示しました。地元の高校生向けにワークショップも実施。「てくてく四万十」を完成させ、「てくてく高知」ではクラウドファンディングで資金を集め、現在も活動を継続しています。",
       did: [
-        "学内外でのフリーコーヒーの定期開催（約30回）",
-        "対話から生まれた声の記録とアーカイブ",
-        "出張開催（須崎・てくてく高知との合同企画）",
+        "店舗紹介カード「てくてく四万十」を制作・掲示",
+        "地元の高校生向けにワークショップを実施",
+        "「てくてく高知」でクラウドファンディングを実施",
       ],
-      outcome: "累計500杯以上を提供。「話を聴く姿勢」がすべての取材・調査の土台に。",
-      image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80&auto=format&fit=crop",
-      gallery: [
-        "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=80&auto=format&fit=crop",
+      outcome: "目標金額40万円のクラウドファンディングを達成し、活動を継続中。",
+      image: "images/w7.jpg",
+      gallery: ["images/w7a.jpg", "images/w7b.jpg"],
+      tags: ["地域活性化", "クラウドファンディング", "四万十"], link: "",
+    },
+    {
+      id: "w8", no: "08", title: "STUDY IN ITALY", category: "交換留学",
+      gradeIds: ["y4"], year: "2025", role: "交換留学生",
+      place: { label: "SARDEGNA", x: 315, y: 566 },
+      description: "卒業までの日々を、イタリア・サルディーニャ島で。",
+      detail: "小学生の頃のホームステイ以来、ずっと大好きだったイタリア。大学でもサマースクールやホームステイで関係を深めてきました。留学にはずっと憧れていたものの、実習との両立が難しく4年生まで見送り——そしてついに、卒業までの日々をイタリア・サルディーニャ島への交換留学へ。憧れを、いちばん大きな花として咲かせます。",
+      did: [
+        "イタリア・サルディーニャ島の大学へ交換留学",
+        "小学生から続くイタリアとの縁を、留学として結実",
+        "卒業までの日々を海外で過ごす",
       ],
-      tags: ["Dialogue", "Community", "Coffee"], link: "#",
+      outcome: "「東京から高知、そして世界へ」——旅路の、いまいちばん遠い目的地。",
+      image: "images/w8.jpg",
+      gallery: ["images/w8a.jpg", "images/w8b.jpg"],
+      tags: ["Study Abroad", "Italy", "Sardegna"], link: "",
     },
   ],
 
   /* ---------- CONTACT ---------- */
   contact: {
-    lead: "お仕事のご相談、ポートフォリオへの感想、旅のおすすめ情報。どんな便りも、次の旅の追い風になります。",
-    email: "hello@hanatabino.example.com",
+    lead: "旅の記録を見てくださって、ありがとうございます。お仕事のご相談も、ただの感想も、旅のおすすめも。どんな便りも、次の旅の追い風になります。",
+    email: "eika.saito@example.com",
     socials: [
       { label: "Instagram", url: "#" },
-      { label: "X (Twitter)", url: "#" },
       { label: "note", url: "#" },
     ],
-    copyright: "© 2026 Hana Tabino. All rights reserved.",
+    copyright: "© 2026 Saito Eika. All rights reserved.",
   },
 };
 
@@ -630,8 +623,9 @@ function initFlower() {
   const inner = document.getElementById("flower-petals-inner");
   const stamens = document.getElementById("flower-stamens");
 
-  const PETAL_D = "M0,0 C-18,-16 -27,-52 -14,-80 C-7,-95 7,-95 14,-80 C27,-52 18,-16 0,0 Z";
-  const VEIN_D  = "M0,-6 C-3,-30 -3,-55 0,-78";
+  /* 桜の花びら：先端に「切れ込み（notch）」を持つ左右対称のシルエット */
+  const PETAL_D = "M0,0 C-12,-18 -20,-44 -17,-63 C-15,-74 -11,-82 -7,-80 C-4,-79 -2,-74 0,-70 C2,-74 4,-79 7,-80 C11,-82 15,-74 17,-63 C20,-44 12,-18 0,0 Z";
+  const VEIN_D  = "M0,-6 C-2,-30 -2,-52 0,-68";
 
   const makePetal = (group, angle, fill, strokeOp) => {
     const g = document.createElementNS(NS, "g");
@@ -653,8 +647,9 @@ function initFlower() {
     return g;
   };
 
-  for (let i = 0; i < 6; i++) makePetal(outer, i * 60,      "url(#petalGrad)",   "0.55");
-  for (let i = 0; i < 6; i++) makePetal(inner, i * 60 + 30, "url(#petalGradIn)", "0.4");
+  /* 桜は5弁。外層5枚、内層5枚を36°ずらして均等に配置（最後まで対称を保つ） */
+  for (let i = 0; i < 5; i++) makePetal(outer, i * 72,      "url(#petalGrad)",   "0.55");
+  for (let i = 0; i < 5; i++) makePetal(inner, i * 72 + 36, "url(#petalGradIn)", "0.4");
 
   for (let i = 0; i < 9; i++) {
     const g = document.createElementNS(NS, "g");
@@ -704,8 +699,10 @@ function initFlower() {
     .to("#flower-bud", { scale: 0, opacity: 0, transformOrigin: "50% 100%", duration: 0.8 }, "<+0.6")
     .to("#flower-petals-inner g path", { scale: 0.62, opacity: 1, duration: 2, stagger: 0.18, ease: "back.out(1.4)" }, "-=0.8")
     .to(".stamen", { scale: 1, opacity: 1, duration: 1, stagger: 0.07, ease: "back.out(2)" }, "-=0.5")
-    .to("#flower-petals-outer", { rotation: 12, transformOrigin: "0px 0px", duration: 2, ease: "sine.inOut" }, "-=0.5")
-    .to("#flower-petals-inner", { rotation: -10, transformOrigin: "0px 0px", duration: 2, ease: "sine.inOut" }, "<");
+    /* 仕上げ：外層・内層を「同じ角度」だけそっと回す＝36°の互い違いを保ったまま、
+       花全体がふわりと開ききる。左右のずれを生まない対称な着地。 */
+    .to(["#flower-petals-outer", "#flower-petals-inner"], { rotation: 6, transformOrigin: "0px 0px", duration: 2, ease: "sine.inOut" }, "-=0.5")
+    .to("#flower-glow", { scale: 1.08, duration: 1.8, ease: "sine.inOut" }, "<");
 
   document.querySelectorAll(".tl-item").forEach(item => {
     gsap.from(item, { y: 50, opacity: 0, duration: 0.9, ease: "power3.out",

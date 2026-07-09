@@ -26,7 +26,7 @@ const SITE_DATA = {
   hero: {
     kicker: "Portfolio of a wandering student",
     lead: "東京から高知へ進学して、スイス、タイ、イタリアまで行ってきました。大学4年間でやってきたことをまとめた記録です。",
-    name: "Saito Eika — Portfolio 2026",
+    name: "Saito Eika — 2026",
   },
 
   /* ---------- ABOUT ---------- */
@@ -61,12 +61,13 @@ const SITE_DATA = {
     {
       id: "y3", year: "2025", grade: "3年生", stage: "五分咲き",
       title: "実習の成果が見え始める", tag: "HALF BLOOM",
-      text: "続けてきた実習が形になってきた年。食べる通信では取材・記事・動画までひと通り担当して、途中からはプロジェクトマネージャーとしてチームのまとめ役に。てくてく四万十が完成し、フリーコーヒーはおにぎり販売に発展。就職活動も始まって、とにかく忙しい一年でした。",
+      text: "続けてきた実習が形になってきた年。食べる通信では取材から記事・動画までひと通り担当して、途中からはプロジェクトマネージャーに。てくてくカードのワークショップ、おむすび屋台「むすび場」、40010プロジェクト——四万十町との関わりも一気に増えました。就職活動も始まって、とにかく忙しい一年でした。",
       activities: [
-        "食べる通信で取材・記事執筆・動画編集・noteでの発信を担当",
+        "食べる通信で取材・記事執筆・動画編集・noteでの発信を担当（ごめんケンカシャモ・米ナスなど）",
         "プロジェクトマネージャーとして、1on1やマニュアル作りでチームを立て直す",
-        "「てくてく四万十」が完成。学校や町役場、イベントで掲示",
-        "フリーコーヒーからおにぎり販売プロジェクトが派生。商店街や夜市で販売",
+        "窪川高校・四万十高校と計6回のワークショップで「てくてく四万十」27店舗分を作成。お祭りで展示",
+        "おむすび屋台「むすび場」を企画。お祭りで120個を完売",
+        "四万十町の40010プロジェクトに参加。ビジネスCaféの司会や「40010人図鑑」の取材・編集を担当",
         "3月に地方創生推進士・グローカル創生推進士を取得。就職活動も本格化",
       ],
     },
@@ -168,9 +169,9 @@ const SITE_DATA = {
       gradeIds: ["y2", "y3"], year: "2024–2026", role: "編集・取材 → プロジェクトマネージャー",
       place: { label: "EHIME / KOCHI", x: 640, y: 344 },
       description: "食べもの付き情報誌の実習。取材から記事・動画まで担当。",
-      detail: "生産者さんを取材して、記事と食べものをセットで届ける「えひめ・こうち食べる通信」。大川村のはちきん地鶏、黒潮町のハタペーニョ、梼原町の土佐あかうしなど、高知のつくり手を訪ねて、インタビュー、撮影、記事執筆、動画編集までひと通りやりました。途中からはプロジェクトマネージャーに。メンバーの脱退が続いた時期は、1on1で一人ひとりの話を聞いたり、作業マニュアルを作ったりして、チームが自分たちで動ける状態に立て直しました。",
+      detail: "生産者さんを取材して、記事と食べものをセットで届ける「えひめ・こうち食べる通信」。大川村のはちきん地鶏、黒潮町のハタペーニョ、梼原町の土佐あかうし、ごめんケンカシャモ、米ナス——高知のつくり手を訪ねて、インタビュー担当と撮影担当に分かれて取材し、記事執筆から動画編集までひと通りやりました。取材はやり直しがきかないので、事前調査で聞きたいことを固めてから臨むのが鉄則。途中からはプロジェクトマネージャーになり、メンバーの脱退が続いた時期は、1on1で一人ひとりの話を聞いたり、作業マニュアルを作ったりして、チームが自分たちで動ける状態に立て直しました。",
       did: [
-        "はちきん地鶏・ハタペーニョ・土佐あかうしなどの生産者を取材",
+        "はちきん地鶏・ハタペーニョ・土佐あかうし・ごめんケンカシャモ・米ナスの生産者を取材",
         "記事執筆・撮影・動画編集・noteでの発信",
         "PMとして1on1とマニュアル整備でチームを立て直し",
       ],
@@ -184,13 +185,13 @@ const SITE_DATA = {
       gradeIds: ["y2", "y3"], year: "2024–2025", role: "メンバー",
       place: { label: "KOCHI", x: 560, y: 240 },
       description: "無料のコーヒーで、通りがかりの人と話す活動。",
-      detail: "コーヒーを無料で配ると、知らない人との会話が自然に生まれる——そんな場を学内や商店街でつくる活動です。看板にコーヒーの種類やキャラクターを描いてみたり、来た人同士を会話に巻き込んでみたり、会話が生まれる工夫をいろいろ試しました。夏休みには商店街で、子どもたちが描いた絵を展示する「街角ギャラリー」も開催。その後はおにぎり販売のプロジェクトにも発展しました。",
+      detail: "コーヒーを無料で配ると、知らない人との会話が自然に生まれる——そんな場をつくる活動です。高知大学で6回、はりまや橋商店街で3回開催して、愛媛大学への出張版もやりました。看板にコーヒーの種類やキャラクターを描いてみたり、来た人同士を会話に巻き込んでみたり、会話が生まれる仕掛けをいろいろ実験。ここから、食べる通信の取材で出会った合わせみそや四万十麦豚を使ったおむすび屋台「むすび場」も生まれて、お祭りでは120個を完売しました。",
       did: [
-        "学内・商店街でフリーコーヒーを開催。会話が生まれる仕掛けを実験",
-        "子ども向けイベント「街角ギャラリー」を企画・開催",
-        "おにぎり販売プロジェクトへ発展。商店街や夜市で販売",
+        "高知大学で6回・はりまや橋商店街で3回開催（愛媛大学でも出張開催）",
+        "子ども向けイベント「街角ギャラリー」を商店街で企画・開催",
+        "おむすび屋台「むすび場」に発展。お祭りで120個完売",
       ],
-      outcome: "「目的のない会話」で鍛えた聴く力が、取材でもずっと効いています。",
+      outcome: "「何を提供するかより、どんな関係を生むか」が本質だと、体で学びました。",
       image: "images/w6.jpg",
       gallery: ["images/w6a.jpg", "images/w6b.jpg"],
       tags: ["対話", "コーヒー", "商店街"], link: "",
@@ -200,10 +201,10 @@ const SITE_DATA = {
       gradeIds: ["y2", "y3"], year: "2024–2026", role: "企画・制作",
       place: { label: "SHIMANTO / KOCHI", x: 610, y: 516 },
       description: "お店紹介カードで、商店街に足を運ぶきっかけをつくるプロジェクト。",
-      detail: "「人はいるのに、お店に十分なお金が落ちていない」という高知市中心商店街の課題に対して、お店を一軒ずつ紹介するカードを作って配るプロジェクト。まず四万十町版の「てくてく四万十」を完成させて、学校や町役場、イベントで掲示してもらいました。高知市版の「てくてく高知」では、100店舗分のカードを作るためにクラウドファンディングに挑戦。55人の方に支援していただき、目標40万円に対して44万円、達成率110%で成立しました。",
+      detail: "「人はいるのに、お店に十分なお金が落ちていない」という商店街の課題に対して、お店を一軒ずつ紹介するカードを作って配るプロジェクト。四万十町では、窪川高校・四万十高校の生徒と一緒に計6回のワークショップを開いて、27店舗分の「てくてく四万十」カードを作成。町役場とも協働しながら、窪川と大正のお祭りで展示しました。高知市版の「てくてく高知」では、100店舗分のカードを作るためにクラウドファンディングに挑戦。55人の方に支援していただき、目標40万円に対して44万円、達成率110%で成立しました。",
       did: [
-        "お店を取材して紹介カードを制作。「てくてく四万十」を完成",
-        "地元の高校生向けワークショップを実施",
+        "窪川高校・四万十高校と計6回のワークショップを開催（町役場と協働）",
+        "27店舗分の「てくてく四万十」を完成させ、地域のお祭りで展示",
         "「てくてく高知」のクラウドファンディングを企画・実行",
       ],
       outcome: "クラウドファンディング達成率110%（44万円・支援者55人）。活動はいまも続いています。",
@@ -368,7 +369,7 @@ function renderData() {
     return `
     <g class="work-pin" data-work="${w.id}" data-cursor role="button" aria-label="${w.title}" transform="translate(${p.x},${p.y})">
       <g class="wp-anim">
-        <circle class="wp-hit" r="36" fill="transparent"/>
+        <circle class="wp-hit" r="24" fill="transparent"/>
         <circle class="wp-pulse" r="10"/>
         <circle class="wp-ring2" r="17"/>
         <circle class="wp-ring" r="10"/>
@@ -380,7 +381,16 @@ function renderData() {
     </g>`;
   }).join("");
   document.querySelectorAll(".work-pin").forEach(pin => {
-    pin.addEventListener("click", () => {
+    pin.addEventListener("click", (e) => {
+      /* 服とピンが重なっている場所では、服のタップを優先する */
+      if (e.clientX || e.clientY) {
+        const under = document.elementsFromPoint(e.clientX, e.clientY)
+          .find(el => el.closest && el.closest(".garment"));
+        if (under) {
+          openWorkWithFlight(parseInt(under.closest(".garment").dataset.index, 10));
+          return;
+        }
+      }
       const idx = d.worksList.findIndex(w => w.id === pin.dataset.work);
       if (idx >= 0) openWorkWithFlight(idx);
     });
@@ -392,6 +402,9 @@ function renderData() {
   document.getElementById("contact-socials").innerHTML       = d.contact.socials
     .map(s => `<li><a href="${s.url}" class="hover-line" data-cursor>${s.label}</a></li>`).join("");
   document.getElementById("footer-copy").textContent = d.contact.copyright;
+
+  /* タイトル「Portfolio」の組み立て（フォールバック時も文字は表示される） */
+  pfInit();
 
   /* 花びらレイヤー（randはGSAP非依存：フォールバック時も安全） */
   const rand = (a, b) => a + Math.random() * (b - a);
@@ -516,6 +529,10 @@ function updateNav(name, instant = false) {
   } else {
     gsap.to(".wp-anim", { opacity: 0, duration: 0.5, overwrite: "auto" });
   }
+
+  /* ピンとクローゼットの重なりを再判定（地球儀の移動完了後にも再実行） */
+  schedulePinMuting();
+  gsap.delayedCall(1.8, schedulePinMuting);
 
   suppressHash = true;
   if (location.hash !== `#${name}`) location.hash = name;
@@ -763,6 +780,40 @@ function initCloset() {
 }
 
 /* ---------------------------------------------------------------
+   6.5 ピンの誤タップ防止
+   クローゼットや導線ボタンに重なったピンは「ミュート」して
+   薄く沈め、タップも受けない状態にする（服のタップが必ず勝つ）
+--------------------------------------------------------------- */
+let pinMuteRaf = 0;
+function updatePinMuting() {
+  pinMuteRaf = 0;
+  const pins = document.querySelectorAll(".work-pin");
+  if (currentView !== "works" || document.body.classList.contains("is-flying")) {
+    pins.forEach(p => p.classList.remove("is-muted"));
+    return;
+  }
+  const rects = [];
+  const closet = document.getElementById("closet");
+  if (closet) rects.push(closet.getBoundingClientRect());
+  const nd = document.querySelector("#view-works .next-dest");
+  if (nd) rects.push(nd.getBoundingClientRect());
+  pins.forEach(pin => {
+    const b = pin.getBoundingClientRect();
+    const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
+    const hit = rects.some(r =>
+      cx > r.left - 12 && cx < r.right + 12 && cy > r.top - 12 && cy < r.bottom + 12);
+    pin.classList.toggle("is-muted", hit);
+  });
+}
+function schedulePinMuting() {
+  if (!pinMuteRaf) pinMuteRaf = requestAnimationFrame(updatePinMuting);
+}
+function initPinMuting() {
+  window.addEventListener("scroll", schedulePinMuting, { passive: true });
+  window.addEventListener("resize", schedulePinMuting);
+}
+
+/* ---------------------------------------------------------------
    7. モーダル共通
 --------------------------------------------------------------- */
 function openModal(id) {
@@ -853,6 +904,7 @@ function openWorkWithFlight(index) {
   flightBusy = true;
 
   document.body.classList.add("is-flying");
+  schedulePinMuting(); /* フライト中はミュート解除（主役のピンを見せる） */
   document.getElementById("fc-place").textContent = w.place.label;
   document.querySelectorAll(".work-pin").forEach(p => p.classList.toggle("is-focus", p === pin));
   const pinAnim = pin.querySelector(".wp-anim");
@@ -876,6 +928,7 @@ function restoreGlobe() {
   gsap.to(`#view-${currentView} .view-inner`, { opacity: 1, duration: 0.6 });
   gsap.to("#globe-inner", { ...GLOBE_POSE[currentView], duration: 1.1, ease: "power3.inOut" });
   gsap.to(".wp-anim", { opacity: currentView === "works" ? 1 : 0, y: 0, duration: 0.6, overwrite: "auto" });
+  gsap.delayedCall(1.2, schedulePinMuting); /* 地球儀が戻ったら重なりを再判定 */
 }
 
 /* ---------------------------------------------------------------
@@ -964,6 +1017,144 @@ function initModals() {
 }
 
 /* ---------------------------------------------------------------
+   9.5 HOMEタイトル「Portfolio」— タップで着せ替え
+   テーマは4つ＝えいかさんの4つの顔
+     bloom（花） / voyage（旅） / sarde（イタリア） / coffee（フリーコーヒー）
+--------------------------------------------------------------- */
+var pfIndex, pfBusy, pfIdleTweens;
+
+function pfFlowerMark() {
+  const petal = '<path d="M0,0 C-4.8,-7.2 -8,-17.6 -6.8,-25.2 C-6,-29.6 -4.4,-32.8 -2.8,-32 C-1.6,-31.6 -0.8,-29.6 0,-28 C0.8,-29.6 1.6,-31.6 2.8,-32 C4.4,-32.8 6,-29.6 6.8,-25.2 C8,-17.6 4.8,-7.2 0,0 Z" fill="url(#pfPetal)" stroke="#B4637A" stroke-opacity="0.35" stroke-width="0.8"/>';
+  let g = "";
+  for (let i = 0; i < 5; i++) g += `<g transform="rotate(${i * 72})">${petal}</g>`;
+  return `<svg viewBox="-36 -36 72 72"><defs><linearGradient id="pfPetal" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#F6D9E1"/><stop offset="1" stop-color="#DE93AF"/></linearGradient></defs>${g}<circle r="4" fill="#D4A24E"/></svg>`;
+}
+
+function pfThemes() {
+  return [
+    { id: "bloom", text: "Portfolio", mark: pfFlowerMark() },
+    { id: "voyage", text: "PORTFOLIO",
+      mark: '<svg viewBox="-13 -13 26 26"><path d="M0,-9 L2.4,-2 L10,3 L2.4,3 L0,10 L-2.4,3 L-10,3 L-2.4,-2 Z" fill="#E4572E" transform="rotate(45)"/></svg>' },
+    { id: "sarde", text: "Portfolio",
+      mark: '<svg viewBox="0 0 34 26"><rect x="1" y="1" width="9" height="24" rx="3" fill="#7A8B6F"/><rect x="12.5" y="1" width="9" height="24" rx="3" fill="#FDFBF5" stroke="#26231C" stroke-opacity="0.18" stroke-width="0.8"/><rect x="24" y="1" width="9" height="24" rx="3" fill="#E4572E"/></svg>' },
+    { id: "coffee", text: "portfolio",
+      mark: '<svg viewBox="-16 -18 32 34"><path d="M-9,-2 h14 v6 a7 7 0 0 1 -14 0 Z" fill="none" stroke="#6B4F35" stroke-width="2.2" stroke-linejoin="round"/><path d="M5,-0.5 h2.4 a3.6 3.6 0 0 1 0 7.2 h-2.4" fill="none" stroke="#6B4F35" stroke-width="2.2"/><path d="M-13,9.5 h22" stroke="#6B4F35" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/><path class="pf-steam" d="M-4.5,-6 c1.6,-2.2 -1.6,-4.4 0,-6.6" fill="none" stroke="#8B7355" stroke-width="1.7" stroke-linecap="round" opacity="0.55"/><path class="pf-steam" d="M1.5,-6 c1.6,-2.2 -1.6,-4.4 0,-6.6" fill="none" stroke="#8B7355" stroke-width="1.7" stroke-linecap="round" opacity="0.55"/></svg>' },
+  ];
+}
+
+/* 文字spanは9個を使い回す（"Portfolio"は3表記とも9文字）。
+   要素を作り直さないので、アニメーションの対象がずれない */
+function pfApply(i, startIdle) {
+  const th = pfThemes()[i];
+  document.getElementById("pf-title").dataset.pf = th.id;
+  document.getElementById("pf-mark").innerHTML = th.mark;
+  const word = document.getElementById("pf-word");
+  let ls = word.querySelectorAll(".pf-l");
+  if (ls.length !== th.text.length) {
+    word.innerHTML = [...th.text].map(c => `<span class="pf-l">${c}</span>`).join("");
+    ls = word.querySelectorAll(".pf-l");
+  } else {
+    ls.forEach((el, idx) => { el.textContent = th.text[idx]; });
+  }
+  if (startIdle && typeof gsap !== "undefined" && !prefersReduced) pfIdle();
+  return ls;
+}
+
+/* 待機中：文字がゆっくり呼吸するように浮き沈みする */
+function pfIdle() {
+  (pfIdleTweens || []).forEach(t => t.kill());
+  pfIdleTweens = [];
+  document.querySelectorAll("#pf-word .pf-l").forEach((el, i) => {
+    pfIdleTweens.push(gsap.to(el, {
+      y: -3 - Math.random() * 3,
+      duration: 2.2 + Math.random() * 1.8,
+      delay: i * 0.15,
+      yoyo: true, repeat: -1, ease: "sine.inOut",
+    }));
+  });
+}
+
+/* テーマごとの「ひとさじ」の演出 */
+function pfFlourish(id) {
+  const title = document.getElementById("pf-title");
+  const w = title.offsetWidth, h = title.offsetHeight;
+  if (id === "bloom") {
+    /* 花びらがふわりと舞い落ちる */
+    for (let i = 0; i < 7; i++) {
+      const p = document.createElement("span");
+      p.className = "pf-petal";
+      p.style.left = `${8 + Math.random() * 84}%`;
+      p.style.top = "18%";
+      title.appendChild(p);
+      gsap.fromTo(p,
+        { y: 0, opacity: 0, rotation: Math.random() * 80 },
+        { y: h * (0.7 + Math.random() * 0.5), x: (Math.random() - 0.5) * 70,
+          opacity: 0.85, rotation: "+=150", duration: 1.5 + Math.random() * 0.8,
+          ease: "sine.in", onComplete: () => p.remove() });
+      gsap.to(p, { opacity: 0, duration: 0.45, delay: 1.35 });
+    }
+  } else if (id === "voyage") {
+    /* 小さな飛行機がタイトルを横切る */
+    const pl = document.createElement("span");
+    pl.className = "pf-plane";
+    pl.innerHTML = '<svg viewBox="-12 -12 24 24"><path d="M0,-9 L2.4,-2 L10,3 L2.4,3 L0,10 L-2.4,3 L-10,3 L-2.4,-2 Z" fill="#E4572E" transform="rotate(90)"/></svg>';
+    title.appendChild(pl);
+    gsap.fromTo(pl,
+      { x: -46, y: h * 0.3, opacity: 0, rotation: -8 },
+      { x: w + 46, y: -h * 0.18, opacity: 1, rotation: 10, duration: 1.15,
+        ease: "power1.inOut", onComplete: () => pl.remove() });
+  } else if (id === "sarde") {
+    /* トリコローレの下線がすっと伸びる */
+    const bar = document.createElement("span");
+    bar.className = "pf-tricolore";
+    title.appendChild(bar);
+    gsap.fromTo(bar, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.7, ease: "power3.out" });
+    gsap.to(bar, { opacity: 0, duration: 0.6, delay: 1.5, onComplete: () => bar.remove() });
+  } else if (id === "coffee") {
+    /* カップから湯気がのぼる */
+    const steam = document.querySelectorAll("#pf-mark .pf-steam");
+    gsap.fromTo(steam, { y: 5, opacity: 0 },
+      { y: -3, opacity: 0.9, duration: 0.9, stagger: 0.25, ease: "sine.out" });
+    gsap.to(steam, { opacity: 0.5, y: 0, duration: 0.7, delay: 1.4 });
+  }
+}
+
+/* クリック／タップで次のテーマへ（文字がめくれて着替わる） */
+function pfSwitch() {
+  if (pfBusy) return;
+  const themes = pfThemes();
+  pfIndex = ((pfIndex || 0) + 1) % themes.length;
+  if (typeof gsap === "undefined" || prefersReduced) { pfApply(pfIndex, false); return; }
+  pfBusy = true;
+  (pfIdleTweens || []).forEach(t => t.kill());
+  pfIdleTweens = [];
+  const mark = document.getElementById("pf-mark");
+  const letters = document.querySelectorAll("#pf-word .pf-l"); /* 使い回しの9文字 */
+  const id = themes[pfIndex].id;
+  /* すべてのtweenを構築時に確定させる（文字は同じ要素のまま中身だけ替わる） */
+  gsap.timeline({ onComplete: () => { pfFlourish(id); pfIdle(); pfBusy = false; } })
+    .to(letters, { y: -16, opacity: 0, rotationX: 60, duration: 0.22, stagger: 0.026, ease: "power2.in" })
+    .to(mark, { scale: 0, opacity: 0, duration: 0.2 }, "<")
+    .add(() => pfApply(pfIndex, false))
+    .set(letters, { y: 26, rotationX: -60 })
+    .set(mark, { rotation: -40 })
+    .to(letters, { y: 0, opacity: 1, rotationX: 0, duration: 0.55, stagger: 0.04, ease: "back.out(1.6)" })
+    .to(mark, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(2.2)" }, "-=0.4");
+}
+
+function pfInit() {
+  const title = document.getElementById("pf-title");
+  if (!title || title.dataset.ready) return;
+  title.dataset.ready = "1";
+  pfIndex = 0; pfBusy = false; pfIdleTweens = [];
+  pfApply(0, true);
+  title.addEventListener("click", pfSwitch);
+  title.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pfSwitch(); }
+  });
+}
+
+/* ---------------------------------------------------------------
    10. カスタムカーソル
 --------------------------------------------------------------- */
 function initCursor() {
@@ -988,6 +1179,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCursor();
   initNav();
   initCloset();
+  initPinMuting();
   initModals();
   gsap.set("#globe-inner", GLOBE_POSE.home);
   initLoader();

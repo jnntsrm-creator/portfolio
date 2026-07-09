@@ -100,6 +100,14 @@ body[data-view="works"] .g-pin { opacity: 0; }
    （ラッパーは pointer-events:none のままなので他の操作は透過する） */
 body[data-view="works"] #bg-globe { z-index: 15; }
 body[data-view="works"] .work-pin { pointer-events: auto; cursor: pointer; }
+
+/* ラベル文字はタップを受けない（当たり判定は円だけに絞る） */
+.work-pin text { pointer-events: none; }
+
+/* クローゼット等と重なったピンは「ミュート」：
+   薄く沈めてタップも受けない＝服のタップが必ず勝つ（JSが座標で判定） */
+.work-pin { transition: opacity 0.45s ease; }
+body[data-view="works"] .work-pin.is-muted { pointer-events: none; opacity: 0.14; }
 /* ── ピン本体：同心円ターゲット＋回転する点線リング＋ステム ──
    地球儀のドット球体・軌道リングと同じ言語でデザイン */
 .work-pin .wp-dot  { fill: var(--pin); transition: fill 0.4s ease; }
@@ -193,8 +201,67 @@ body[data-view="works"] .nav-link.is-current { color: #E88C6A; }
 }
 
 /* ------------------------------------------------------------
-   HOME
+   HOME：タイトル「Portfolio」（タップで着せ替え）
+   テーマは4つ＝えいかさんの4つの顔
+     bloom（花）/ voyage（旅）/ sarde（イタリア）/ coffee（フリーコーヒー）
 ------------------------------------------------------------ */
+.pf-title {
+  --pf-a: #B4637A;               /* 主色 */
+  --pf-b: #E8A0B4;               /* 交互に入る差し色 */
+  position: relative; display: inline-flex; align-items: baseline; gap: 0.12em;
+  font-family: "Cormorant Garamond", "Shippori Mincho", serif;
+  font-size: clamp(2.9rem, 13.5vw, 11.5rem);
+  line-height: 0.95; cursor: pointer; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.pf-title:focus-visible { outline: 2px solid var(--pin); outline-offset: 8px; border-radius: 6px; }
+.pf-word { display: inline-block; white-space: nowrap; perspective: 700px; }
+.pf-l {
+  display: inline-block; color: var(--pf-a);
+  transition: color 0.6s ease;
+  will-change: transform;
+}
+.pf-l:nth-child(even) { color: var(--pf-b); }
+
+/* テーマごとの字面（文字色・書体の表情） */
+.pf-title[data-pf="bloom"]  { --pf-a: #B4637A; --pf-b: #DE93AF; }
+.pf-title[data-pf="bloom"]  .pf-word { font-style: italic; }
+.pf-title[data-pf="voyage"] { --pf-a: #26231C; --pf-b: #31496B; }
+.pf-title[data-pf="voyage"] .pf-word { letter-spacing: 0.06em; }
+.pf-title[data-pf="voyage"] .pf-l:last-child { color: #E4572E; }
+.pf-title[data-pf="sarde"]  { --pf-a: #C4502A; --pf-b: #D4A24E; }
+.pf-title[data-pf="coffee"] { --pf-a: #6B4F35; --pf-b: #8B7355; }
+.pf-title[data-pf="coffee"] .pf-word { font-style: italic; letter-spacing: 0.02em; }
+
+/* 語尾のマーク（テーマの象徴：花／飛行機／伊国旗／コーヒー） */
+.pf-mark { display: inline-block; width: 0.5em; height: 0.5em; flex: 0 0 auto; transform-origin: 50% 80%; }
+.pf-mark svg { width: 100%; height: 100%; overflow: visible; display: block; }
+
+/* 着せ替えのヒント */
+.pf-hint {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin-top: 26px; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  opacity: 0.5;
+}
+
+/* テーマ切替時の「ひとさじ」の演出パーツ */
+.pf-petal {
+  position: absolute; width: 12px; height: 16px; pointer-events: none; opacity: 0;
+  background: linear-gradient(160deg, #F6D9E1, #DE93AF);
+  border-radius: 80% 20% 65% 35% / 55% 60% 40% 45%;
+}
+.pf-plane {
+  position: absolute; left: 0; top: 0; pointer-events: none;
+  width: clamp(26px, 3vw, 44px); height: clamp(26px, 3vw, 44px);
+}
+.pf-plane svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 8px rgba(38, 35, 28, 0.25)); }
+.pf-tricolore {
+  position: absolute; left: 1%; bottom: -0.07em; width: 97%; height: 0.05em;
+  border-radius: 9999px; transform-origin: left center; pointer-events: none;
+  background: linear-gradient(90deg, #7A8B6F 0 33.3%, #FDFBF5 33.3% 66.6%, #E4572E 66.6% 100%);
+  box-shadow: 0 1px 5px rgba(38, 35, 28, 0.15);
+}
+
 .marquee { display: inline-block; animation: marquee 28s linear infinite; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 

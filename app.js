@@ -232,13 +232,8 @@ const SITE_DATA = {
 
   /* ---------- FUTURE ---------- */
   future: {
-    lead: "ここまで見てくださってありがとうございます。9月からはサルディーニャ島へ。卒業研究をやり切って、春からは社会人になります。実習で見つけた得意技は「チームの力を最大化すること」。今度はそれを仕事にして、誰かが安心して挑戦できる環境をつくる側になりたいです。高知で覚えた地域の面白がり方を持って、次の場所でも、たぶんまた何かに飛び込みます。",
-    points: [
-      "サルディーニャ島で卒業研究をやり切る",
-      "「チームの力を最大化する」を仕事の武器にする",
-      "旅とフィールドワークは、これからも",
-    ],
-    hint: "この地球儀、さわれます — ドラッグでころころ、上下にびよーん、タップで気まぐれモーション（全15種）",
+    lead: "見てくださってありがとうございます。9月からはサルデーニャ島へ留学に行きます。卒業研究をやり切って、春からは社会人になります。これからも成長し続けていきます。",
+    hint: "この地球儀、さわれます — ドラッグでころころ、タップでぷにぷに",
     copyright: "© 2026 Saito Eika. All rights reserved.",
   },
 };
@@ -398,8 +393,6 @@ function renderData() {
   });
 
   document.getElementById("future-lead").textContent = d.future.lead;
-  document.getElementById("future-points").innerHTML = d.future.points
-    .map(p => `<li class="font-mincho text-xs border border-denim/40 text-denim rounded-full px-4 py-1.5">${p}</li>`).join("");
   document.getElementById("future-hint-text").textContent = d.future.hint;
   document.getElementById("footer-copy").textContent = d.future.copyright;
 
@@ -1024,125 +1017,23 @@ function initModals() {
 
 /* ---------------------------------------------------------------
    9.4 FUTURE：地球儀プレイグラウンド
-   ドラッグで回す・上下にのばす、タップで15種のモーション
+   タップ＝ぷにぷに／ドラッグ＝ころころ回す（離すと慣性）
 --------------------------------------------------------------- */
-var trickBusy, lastTrick;
+var trickBusy;
 
-/* 15種のモーション（名前は画面下のキャプションに出る） */
-function globeTricks() {
-  const BALL = "#globe-inner svg";           /* 球体そのもの（姿勢は親が持つので安全に変形できる） */
-  const ROTOR = "#globe-rotor";              /* 模様の回転レイヤー */
-  const O = { svgOrigin: "400 400" };
-  return [
-    { name: "ぐるぐる", dur: 2.3, fn() {
-        gsap.to(ROTOR, { rotation: "+=900", duration: 2.3, ease: "power4.out", ...O });
-      } },
-    { name: "ぽーん", dur: 1.7, fn() {
-        gsap.timeline()
-          .to(BALL, { scaleY: 0.9, scaleX: 1.06, duration: 0.16, ease: "power2.in" })
-          .to(BALL, { y: -110, scaleY: 1.05, scaleX: 0.97, duration: 0.42, ease: "power2.out" })
-          .to(BALL, { y: 0, duration: 0.75, ease: "bounce.out" })
-          .to(BALL, { scaleX: 1, scaleY: 1, duration: 0.3, ease: "power2.out" }, "-=0.3");
-      } },
-    { name: "ぷにぷに", dur: 1.6, fn() {
-        gsap.timeline()
-          .to(BALL, { scaleX: 1.14, scaleY: 0.86, duration: 0.18, ease: "power2.in" })
-          .to(BALL, { scaleX: 1, scaleY: 1, duration: 1.35, ease: "elastic.out(1, 0.25)" });
-      } },
-    { name: "ぷるぷる", dur: 1, fn() {
-        gsap.to(BALL, { keyframes: [{ rotation: -3 }, { rotation: 3 }, { rotation: -2 }, { rotation: 2 }, { rotation: 0 }], duration: 0.9, ease: "power1.inOut" });
-      } },
-    { name: "いやいや", dur: 0.9, fn() {
-        gsap.to(BALL, { keyframes: [{ x: -16 }, { x: 13 }, { x: -9 }, { x: 6 }, { x: 0 }], duration: 0.8, ease: "power1.inOut" });
-      } },
-    { name: "うんうん", dur: 1, fn() {
-        gsap.to(BALL, { keyframes: [{ y: 14 }, { y: -4 }, { y: 10 }, { y: 0 }], duration: 0.9, ease: "power1.inOut" });
-      } },
-    { name: "ふわり", dur: 2.7, fn() {
-        gsap.timeline()
-          .to(BALL, { y: -80, rotation: 2, duration: 1.2, ease: "sine.out" })
-          .to(BALL, { y: 0, rotation: 0, duration: 1.4, ease: "sine.inOut" });
-      } },
-    { name: "どきどき", dur: 1.5, fn() {
-        gsap.to(BALL, { keyframes: [{ scale: 1.06 }, { scale: 1 }, { scale: 1.05 }, { scale: 1 }], duration: 1.4, ease: "power1.inOut" });
-      } },
-    { name: "びゅーん", dur: 2.6, fn() {
-        const sat = document.querySelector(".g-satellite-wrap");
-        if (sat) { sat.style.animationDuration = "1.2s"; setTimeout(() => { sat.style.animationDuration = ""; }, 2500); }
-        gsap.to(ROTOR, { rotation: "+=60", duration: 2.4, ease: "power2.out", ...O });
-      } },
-    { name: "こんにちは", dur: 1.7, fn() {
-        gsap.fromTo(".g-pin .pin-dot, .g-pin .pin-ring", { scale: 1 },
-          { scale: 1.8, duration: 0.28, stagger: 0.14, yoyo: true, repeat: 1, ease: "power2.out" });
-      } },
-    { name: "なみのり", dur: 2.3, fn() {
-        gsap.to(BALL, { keyframes: [{ rotation: -5, y: -12 }, { rotation: 4, y: 8 }, { rotation: -3, y: -6 }, { rotation: 0, y: 0 }], duration: 2.2, ease: "sine.inOut" });
-      } },
-    { name: "くるりんぱ", dur: 2, fn() {
-        gsap.timeline()
-          .to(BALL, { scale: 0.55, rotation: 360, duration: 0.8, ease: "power2.in" })
-          .to(BALL, { scale: 1, rotation: 720, duration: 1.05, ease: "elastic.out(1, 0.4)" })
-          .set(BALL, { rotation: 0 });
-      } },
-    { name: "ゆらゆら", dur: 2.5, fn() {
-        gsap.timeline()
-          .set(BALL, { transformOrigin: "50% 0%" })
-          .to(BALL, { keyframes: [{ rotation: -7 }, { rotation: 7 }, { rotation: -4 }, { rotation: 4 }, { rotation: 0 }], duration: 2.3, ease: "sine.inOut" })
-          .set(BALL, { transformOrigin: "50% 50%" });
-      } },
-    { name: "しんこきゅう", dur: 3.3, fn() {
-        gsap.to(BALL, { scale: 1.07, duration: 1.6, yoyo: true, repeat: 1, ease: "sine.inOut" });
-      } },
-    { name: "まんかい", dur: 2.4, fn() {
-        gsap.fromTo(".g-pin .pin-dot", { scale: 1 }, { scale: 2, duration: 0.3, stagger: 0.1, yoyo: true, repeat: 1 });
-        const layer = document.createElement("div");
-        layer.className = "play-petal-layer";
-        document.body.appendChild(layer);
-        for (let i = 0; i < 16; i++) {
-          const p = document.createElement("span");
-          p.className = "play-petal";
-          layer.appendChild(p);
-          const a = Math.random() * Math.PI * 2, dist = 130 + Math.random() * 200;
-          gsap.fromTo(p, { x: 0, y: 0, opacity: 0, rotation: Math.random() * 90 },
-            { x: Math.cos(a) * dist, y: Math.sin(a) * dist - 60, opacity: 0.9, rotation: "+=160", duration: 0.9, ease: "power2.out" });
-          gsap.to(p, { y: "+=190", opacity: 0, duration: 1.2, delay: 0.85, ease: "sine.in" });
-        }
-        setTimeout(() => layer.remove(), 2400);
-      } },
-  ];
-}
-
-function showPlayCaption(text) {
-  const c = document.getElementById("play-caption");
-  if (!c) return;
-  c.textContent = text;
-  if (typeof gsap === "undefined") return;
-  gsap.timeline()
-    .fromTo(c, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 })
-    .to(c, { opacity: 0, duration: 0.5, delay: 1.3 });
-}
-
-/* タップ：前回と違うモーションをランダムに再生 */
-function playTrick() {
-  if (trickBusy) return;
-  const tricks = globeTricks();
-  let i;
-  do { i = Math.floor(Math.random() * tricks.length); } while (i === lastTrick);
-  lastTrick = i;
-  const t = tricks[i];
-  showPlayCaption(`#${String(i + 1).padStart(2, "0")} ${t.name}`);
-  if (prefersReduced) return; /* 動きを控える設定では名前だけ */
+/* タップ：ぷにぷに（つぶれて、ぷるんと戻る） */
+function punipuni() {
+  if (trickBusy || prefersReduced) return;
   trickBusy = true;
-  t.fn();
-  gsap.delayedCall(t.dur, () => { trickBusy = false; });
+  gsap.timeline({ onComplete: () => { trickBusy = false; } })
+    .to("#globe-inner svg", { scaleX: 1.14, scaleY: 0.86, duration: 0.18, ease: "power2.in", transformOrigin: "50% 50%" })
+    .to("#globe-inner svg", { scaleX: 1, scaleY: 1, duration: 1.35, ease: "elastic.out(1, 0.25)" });
 }
 
-/* ドラッグ：横＝ころころ回す（離すと慣性）／縦＝びよーんとのばす */
 function initGlobePlay() {
   const sphere = document.getElementById("globe-sphere");
   if (!sphere || typeof gsap === "undefined") return;
-  trickBusy = false; lastTrick = -1;
-  const BALL = "#globe-inner svg";
+  trickBusy = false;
   let down = false, sx = 0, sy = 0, baseRot = 0, moved = 0, lastX = 0, lastT = 0, vel = 0, t0 = 0;
 
   sphere.addEventListener("pointerdown", e => {
@@ -1155,20 +1046,17 @@ function initGlobePlay() {
   });
   sphere.addEventListener("pointermove", e => {
     if (!down) return;
-    const dx = e.clientX - sx, dy = e.clientY - sy;
-    moved = Math.max(moved, Math.abs(dx), Math.abs(dy));
+    const dx = e.clientX - sx;
+    moved = Math.max(moved, Math.abs(dx), Math.abs(e.clientY - sy));
     const now = performance.now();
     vel = 0.8 * vel + 0.2 * ((e.clientX - lastX) / Math.max(1, now - lastT));
     lastX = e.clientX; lastT = now;
     gsap.set("#globe-rotor", { rotation: baseRot + dx * 0.4, svgOrigin: "400 400" });
-    const s = 1 + Math.max(-0.18, Math.min(0.3, dy / 420));
-    gsap.set(BALL, { scaleY: s, scaleX: 1 - (s - 1) * 0.45, transformOrigin: "50% 50%" });
   });
-  const release = e => {
+  const release = () => {
     if (!down) return;
     down = false;
-    gsap.to(BALL, { scaleX: 1, scaleY: 1, duration: 1.1, ease: "elastic.out(1, 0.35)" });
-    if (moved < 6 && performance.now() - t0 < 350) { playTrick(); return; } /* タップ扱い */
+    if (moved < 6 && performance.now() - t0 < 350) { punipuni(); return; } /* タップ扱い */
     if (Math.abs(vel) > 0.05) {
       gsap.to("#globe-rotor", { rotation: `+=${vel * 400}`, duration: 1.8, ease: "power3.out", svgOrigin: "400 400" });
     }

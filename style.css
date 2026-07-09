@@ -153,7 +153,7 @@ body.is-flying #bg-globe { z-index: 40; }
 
 /* ------------------------------------------------------------
    FUTURE：地球儀プレイグラウンド
-   球体を直接つかんで回す・のばす・タップで15種のモーション
+   球体を直接つかんで、ドラッグ＝ころころ／タップ＝ぷにぷに
 ------------------------------------------------------------ */
 body[data-view="future"] #bg-globe { z-index: 15; }
 body[data-view="future"] #globe-sphere {
@@ -162,30 +162,8 @@ body[data-view="future"] #globe-sphere {
 body[data-view="future"] #globe-sphere:active { cursor: grabbing; }
 
 /* 遊び場では都市ラベルの文字は消して、ドットとリングだけ残す
-   （見出しや文章と重ならないように。ピン自体は「こんにちは」で手を振る） */
+   （見出しや文章と重ならないように） */
 body[data-view="future"] .g-pin .pin-label { opacity: 0; }
-
-/* ピンの円は自分の中心で拡縮できるように（「こんにちは」「まんかい」用） */
-.g-pin circle { transform-box: fill-box; transform-origin: center; }
-
-/* モーション名のキャプション（#07 ふわり など） */
-#play-caption {
-  position: fixed; bottom: 7vh; left: 0; right: 0; z-index: 16;
-  text-align: center; pointer-events: none; opacity: 0;
-  font-family: "Shippori Mincho", serif; font-size: 13px;
-  letter-spacing: 0.28em; color: #31496B;
-}
-
-/* 「まんかい」の花びら */
-.play-petal-layer {
-  position: fixed; inset: 0; z-index: 16; pointer-events: none;
-  display: flex; align-items: center; justify-content: center;
-}
-.play-petal {
-  position: absolute; width: 12px; height: 16px; opacity: 0;
-  background: linear-gradient(160deg, #F6D9E1, #DE93AF);
-  border-radius: 80% 20% 65% 35% / 55% 60% 40% 45%;
-}
 
 /* ------------------------------------------------------------
    ノイズ・カーソル

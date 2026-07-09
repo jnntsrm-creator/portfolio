@@ -1,3 +1,9 @@
 .claude/
 .DS_Store
 Thumbs.db
+
+# 元資料（サイトには公開しない）
+*.pptx
+*.docx
+*.pdf
+/*.jpg

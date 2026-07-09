@@ -78,8 +78,8 @@
           </radialGradient>
         </defs>
 
-        <!-- 球体 -->
-        <circle cx="400" cy="400" r="268" fill="url(#sphereGrad)"/>
+        <!-- 球体（FUTUREページではここを掴んで遊べる） -->
+        <circle id="globe-sphere" cx="400" cy="400" r="268" fill="url(#sphereGrad)" data-cursor/>
         <!-- 回転レイヤー（装飾のみ回る。ピンとラベルはこの外なので常に正立） -->
         <g id="globe-rotor">
           <g clip-path="url(#sphereClip)">
@@ -108,7 +108,7 @@
         <!-- 移動ルート（JSで描画） -->
         <path id="route-path" d="" fill="none" class="g-route" stroke-width="1.6" stroke-linecap="round"/>
 
-        <!-- 都市ピン（HOME=東京 / ABOUT=高知 / CONTACT=次の目的地） -->
+        <!-- 都市ピン（HOME=東京 / ABOUT=高知 / FUTURE=次の目的地） -->
         <g class="g-pin" data-city="home" transform="translate(548,312)">
           <circle class="pin-pulse" r="7"/><circle class="pin-ring" r="9"/><circle class="pin-dot" r="3.5"/>
           <text class="pin-label" y="26">TOKYO</text>
@@ -117,7 +117,7 @@
           <circle class="pin-pulse" r="7"/><circle class="pin-ring" r="9"/><circle class="pin-dot" r="3.5"/>
           <text class="pin-label" y="26">KOCHI</text>
         </g>
-        <g class="g-pin" data-city="contact" transform="translate(352,240)">
+        <g class="g-pin" data-city="future" transform="translate(352,240)">
           <circle class="pin-pulse" r="7"/><circle class="pin-ring" r="9"/><circle class="pin-dot" r="3.5"/>
           <text class="pin-label" y="26">NEXT STOP</text>
         </g>
@@ -196,6 +196,9 @@
     <p id="fc-place" class="font-display text-3xl md:text-5xl tracking-widest text-accent"></p>
   </div>
 
+  <!-- 地球儀プレイグラウンドのモーション名（FUTUREページ） -->
+  <p id="play-caption" aria-hidden="true"></p>
+
   <!-- ============================================================
        HEADER
   ============================================================= -->
@@ -206,7 +209,7 @@
         <li><a href="#home"    class="nav-link hover-line" data-nav="home"    data-cursor>Home</a></li>
         <li><a href="#about"   class="nav-link hover-line" data-nav="about"   data-cursor>About</a></li>
         <li><a href="#works"   class="nav-link hover-line" data-nav="works"   data-cursor>Works</a></li>
-        <li><a href="#contact" class="nav-link hover-line" data-nav="contact" data-cursor>Contact</a></li>
+        <li><a href="#future" class="nav-link hover-line" data-nav="future" data-cursor>Future</a></li>
       </ul>
     </nav>
   </header>
@@ -389,9 +392,9 @@
         </div>
 
         <div class="reveal mt-8">
-          <button class="next-dest group" data-nav="contact" data-cursor>
+          <button class="next-dest group" data-nav="future" data-cursor>
             <span class="text-[10px] tracking-widest2 uppercase opacity-50 block">Next Destination</span>
-            <span class="font-display text-3xl md:text-4xl inline-flex items-center gap-4">Next Stop — Contact
+            <span class="font-display text-3xl md:text-4xl inline-flex items-center gap-4">Future — Next Stop
               <svg viewBox="0 0 24 24" class="w-6 h-6 transition-transform duration-500 group-hover:translate-x-2"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
           </button>
@@ -399,22 +402,22 @@
       </div>
     </section>
 
-    <!-- ===================== CONTACT ===================== -->
-    <section class="view" id="view-contact">
-      <div class="view-inner min-h-screen w-full flex flex-col items-center justify-center text-center px-6 md:px-16 py-28">
-        <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-accent mb-6">03 — Contact / Boarding for the Next Stop</p>
-        <h2 class="reveal font-display text-[12vw] md:text-[7vw] leading-none">LET'S FLY<br/><span class="italic">TOGETHER<span class="text-accent">.</span></span></h2>
-        <p class="reveal font-mincho mt-8 text-sm md:text-base leading-loose max-w-md mx-auto" id="contact-lead"></p>
-        <a id="contact-email" href="#" data-cursor
-           class="reveal boarding-pass group inline-flex items-center gap-4 mt-12 px-8 py-5 bg-ink text-cream rounded-xl relative overflow-hidden">
-          <span class="text-[10px] tracking-widest2 uppercase opacity-60 border-r border-cream/30 pr-4">Boarding Pass</span>
-          <span class="font-display text-xl md:text-2xl tracking-wider" id="contact-email-text"></span>
-          <svg viewBox="0 0 24 24" class="w-5 h-5 transition-transform duration-500 group-hover:translate-x-2 group-hover:-translate-y-1">
-            <path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="#E4572E" transform="rotate(45 12 12)"/>
-          </svg>
-        </a>
-        <ul id="contact-socials" class="reveal flex justify-center gap-8 mt-14 text-xs tracking-widest2 uppercase"></ul>
-        <p id="footer-copy" class="reveal mt-16 text-[10px] tracking-widest2 uppercase opacity-50"></p>
+    <!-- ===================== FUTURE ===================== -->
+    <section class="view" id="view-future">
+      <div class="view-inner min-h-screen w-full flex flex-col items-center text-center px-6 md:px-16 pt-28 md:pt-32 pb-8">
+        <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-denim mb-6">03 — Future / Boarding for the Next Stop</p>
+        <h2 class="reveal font-display text-[11vw] md:text-[7vw] leading-none">NEXT<br/><span class="italic text-denim">STOP<span class="text-accent">.</span></span></h2>
+        <p class="reveal font-mincho mt-7 text-sm md:text-base leading-loose max-w-xl mx-auto" id="future-lead"></p>
+        <ul id="future-points" class="reveal flex flex-wrap justify-center gap-2 mt-6"></ul>
+
+        <!-- 地球儀プレイグラウンド：背景の地球儀をさわるための余白 -->
+        <div class="flex-1 min-h-[24vh]" aria-hidden="true"></div>
+
+        <p id="future-hint" class="reveal text-[10px] tracking-widest2 uppercase opacity-60 flex items-center justify-center gap-2">
+          <svg viewBox="0 0 24 24" class="w-4 h-4"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.4"/><ellipse cx="12" cy="12" rx="9" ry="3.6" fill="none" stroke="currentColor" stroke-width="1"/><ellipse cx="12" cy="12" rx="3.6" ry="9" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+          <span id="future-hint-text"></span>
+        </p>
+        <p id="footer-copy" class="reveal mt-5 text-[10px] tracking-widest2 uppercase opacity-50"></p>
       </div>
     </section>
   </main>

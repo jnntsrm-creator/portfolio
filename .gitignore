@@ -7,3 +7,6 @@ Thumbs.db
 *.docx
 *.pdf
 /*.jpg
+
+# 別プロジェクト（このリポジトリには含めない）
+/modus/

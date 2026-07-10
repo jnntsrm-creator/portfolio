@@ -135,7 +135,7 @@ const SITE_DATA = {
     {
       id: "w3", no: "03", title: "SPRING SCHOOL", category: "国内プログラム",
       gradeIds: ["y1", "y2", "y3"], year: "2024–2026", role: "参加者（3年連続）",
-      place: { label: "SUSAKI, JAPAN", x: 430, y: 178 },
+      place: { label: "JAPAN", sub: "SUSAKI", x: 430, y: 178 },
       description: "須崎市で毎年3月に開かれる国際スプリングスクールに3年連続で参加。",
       detail: "海外の学生と一緒に須崎のまちを歩いて、課題を見つけて、市にプレゼンするプログラム。1回目は「光と音」をテーマにしたフェーズフリーな防災のまちづくりを提案して、それが採択され、12月に「Light up the Life! —須崎に希望の灯をともそう—」というイベントとして実現しました。小中高生と一緒に津波避難場所をキャンドルと光で灯す夜は、忘れられません。2回目は台湾とイタリアの学生とチームを組んで、新しくできる図書館を防災と学びの拠点にする提案を英語で発表しました。",
       did: [
@@ -167,7 +167,7 @@ const SITE_DATA = {
     {
       id: "w5", no: "05", title: "えひめ・こうち食べる通信", category: "実習",
       gradeIds: ["y2", "y3"], year: "2024–2026", role: "編集・取材 → プロジェクトマネージャー",
-      place: { label: "EHIME / KOCHI", x: 640, y: 344 },
+      place: { label: "EHIME / KOCHI", small: true, x: 640, y: 344 },
       description: "食べもの付き情報誌の実習。取材から記事・動画まで担当。",
       detail: "生産者さんを取材して、記事と食べものをセットで届ける「えひめ・こうち食べる通信」。大川村のはちきん地鶏、黒潮町のハタペーニョ、梼原町の土佐あかうし、ごめんケンカシャモ、米ナス——高知のつくり手を訪ねて、インタビュー担当と撮影担当に分かれて取材し、記事執筆から動画編集までひと通りやりました。取材はやり直しがきかないので、事前調査で聞きたいことを固めてから臨むのが鉄則。途中からはプロジェクトマネージャーになり、メンバーの脱退が続いた時期は、1on1で一人ひとりの話を聞いたり、作業マニュアルを作ったりして、チームが自分たちで動ける状態に立て直しました。",
       did: [
@@ -183,7 +183,7 @@ const SITE_DATA = {
     {
       id: "w6", no: "06", title: "FREE COFFEE", category: "実習",
       gradeIds: ["y2", "y3"], year: "2024–2025", role: "メンバー",
-      place: { label: "KOCHI", x: 560, y: 240 },
+      place: { label: "KOCHI", small: true, x: 560, y: 240 },
       description: "無料のコーヒーで、通りがかりの人と話す活動。",
       detail: "コーヒーを無料で配ると、知らない人との会話が自然に生まれる——そんな場をつくる活動です。高知大学で6回、はりまや橋商店街で3回開催して、愛媛大学への出張版もやりました。看板にコーヒーの種類やキャラクターを描いてみたり、来た人同士を会話に巻き込んでみたり、会話が生まれる仕掛けをいろいろ実験。ここから、食べる通信の取材で出会った合わせみそや四万十麦豚を使ったおむすび屋台「むすび場」も生まれて、お祭りでは120個を完売しました。",
       did: [
@@ -199,7 +199,7 @@ const SITE_DATA = {
     {
       id: "w7", no: "07", title: "てくてく高知・四万十", category: "実習・PJ",
       gradeIds: ["y2", "y3"], year: "2024–2026", role: "企画・制作",
-      place: { label: "SHIMANTO / KOCHI", x: 610, y: 516 },
+      place: { label: "SHIMANTO / KOCHI", small: true, x: 610, y: 516 },
       description: "お店紹介カードで、商店街に足を運ぶきっかけをつくるプロジェクト。",
       detail: "「人はいるのに、お店に十分なお金が落ちていない」という商店街の課題に対して、お店を一軒ずつ紹介するカードを作って配るプロジェクト。四万十町では、窪川高校・四万十高校の生徒と一緒に計6回のワークショップを開いて、27店舗分の「てくてく四万十」カードを作成。町役場とも協働しながら、窪川と大正のお祭りで展示しました。高知市版の「てくてく高知」では、100店舗分のカードを作るためにクラウドファンディングに挑戦。55人の方に支援していただき、目標40万円に対して44万円、達成率110%で成立しました。",
       did: [
@@ -357,11 +357,17 @@ function renderData() {
     </button>`).join("");
 
   /* 地球儀上のWorkピン（クリックでそのWorkへフライト）
-     デザイン：同心円ターゲット＋回転点線リング＋ステム＋2行ラベル */
+     デザイン：同心円ターゲット＋回転点線リング＋ステム＋ラベル
+     ・label＝国名（現行サイズ） ／ sub＝都市名（小さめ・国名の内側）
+     ・small:true のラベルは都市名扱いで一回り小さく */
   document.getElementById("work-pins").innerHTML = d.worksList.map(w => {
     const p = w.place;
     const above = p.y > 400; /* 球の下半分のピンはラベルを上に */
     const s = above ? -1 : 1;
+    const hasSub = !!p.sub;
+    const labY = above ? (hasSub ? -55 : -50) : (hasSub ? 55 : 50);
+    const subY = above ? -38 : 38;
+    const l2Y  = above ? (hasSub ? -71 : -36) : (hasSub ? 71 : 66);
     return `
     <g class="work-pin" data-work="${w.id}" data-cursor role="button" aria-label="${w.title}" transform="translate(${p.x},${p.y})">
       <g class="wp-anim">
@@ -371,8 +377,9 @@ function renderData() {
         <circle class="wp-ring" r="10"/>
         <circle class="wp-dot" r="3.4"/>
         <line class="wp-stem" x1="0" y1="${s * 12}" x2="0" y2="${s * 30}"/>
-        <text class="wp-label"  y="${above ? -50 : 50}">${p.label}</text>
-        <text class="wp-label2" y="${above ? -36 : 66}">No.${w.no} — ${w.title}</text>
+        ${hasSub ? `<text class="wp-sub" y="${subY}">${p.sub}</text>` : ""}
+        <text class="wp-label${p.small ? " is-city" : ""}" y="${labY}">${p.label}</text>
+        <text class="wp-label2" y="${l2Y}">No.${w.no} — ${w.title}</text>
       </g>
     </g>`;
   }).join("");
@@ -780,8 +787,8 @@ function initCloset() {
 
 /* ---------------------------------------------------------------
    6.5 ピンの誤タップ防止
-   クローゼットや導線ボタンに重なったピンは「ミュート」して
-   薄く沈め、タップも受けない状態にする（服のタップが必ず勝つ）
+   クローゼットが画面に見えている間は、すべてのピン・国名・都市名を
+   薄く沈めてタップも受けない状態にする（服のタップが必ず勝つ）
 --------------------------------------------------------------- */
 let pinMuteRaf = 0;
 function updatePinMuting() {
@@ -791,18 +798,11 @@ function updatePinMuting() {
     pins.forEach(p => p.classList.remove("is-muted"));
     return;
   }
-  const rects = [];
   const closet = document.getElementById("closet");
-  if (closet) rects.push(closet.getBoundingClientRect());
-  const nd = document.querySelector("#view-works .next-dest");
-  if (nd) rects.push(nd.getBoundingClientRect());
-  pins.forEach(pin => {
-    const b = pin.getBoundingClientRect();
-    const cx = b.left + b.width / 2, cy = b.top + b.height / 2;
-    const hit = rects.some(r =>
-      cx > r.left - 12 && cx < r.right + 12 && cy > r.top - 12 && cy < r.bottom + 12);
-    pin.classList.toggle("is-muted", hit);
-  });
+  const r = closet ? closet.getBoundingClientRect() : null;
+  /* クローゼットが少しでも画面に入っていたら「表示中」とみなす */
+  const closetVisible = r && r.top < window.innerHeight * 0.92 && r.bottom > 0;
+  pins.forEach(pin => pin.classList.toggle("is-muted", !!closetVisible));
 }
 function schedulePinMuting() {
   if (!pinMuteRaf) pinMuteRaf = requestAnimationFrame(updatePinMuting);

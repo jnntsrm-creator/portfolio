@@ -53,6 +53,17 @@ body[data-view="future"] {
 .view { display: none; position: relative; }
 .view.active { display: block; }
 
+/* 見出し・リード文を背景の地球儀から浮かせるドロップシャドウ
+   （ページ背景色のハローで文字の周りだけ地球儀の模様を沈める） */
+.pop-text {
+  text-shadow:
+    0 1px 2px var(--bg),
+    0 0 10px var(--bg),
+    0 0 22px var(--bg),
+    0 0 38px var(--bg),
+    0 0 60px var(--bg);
+}
+
 /* ------------------------------------------------------------
    背景の地球儀（洗練版：ドットマトリクス球体）
 ------------------------------------------------------------ */
@@ -127,6 +138,14 @@ body[data-view="works"] .work-pin.is-muted { pointer-events: none; opacity: 0.14
   font-family: "Cormorant Garamond", "Shippori Mincho", serif;
   font-size: 18px; font-weight: 600; letter-spacing: 0.14em; text-anchor: middle;
 }
+/* 都市名・県名は国名より一回り小さく */
+.work-pin .wp-label.is-city { font-size: 13px; letter-spacing: 0.18em; }
+/* 国名の下に添える都市名（例：JAPAN の下の SUSAKI） */
+.work-pin .wp-sub {
+  fill: var(--fg); opacity: 0.8;
+  font-family: "Cormorant Garamond", "Shippori Mincho", serif;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.22em; text-anchor: middle;
+}
 .work-pin .wp-label2 {
   fill: var(--fg); opacity: 0.6;
   font-family: "Zen Kaku Gothic New", sans-serif;
@@ -134,6 +153,7 @@ body[data-view="works"] .work-pin.is-muted { pointer-events: none; opacity: 0.14
   text-transform: uppercase;
 }
 body[data-view="works"] .wp-label  { fill: #F5F0E6; }
+body[data-view="works"] .wp-sub    { fill: #F5F0E6; }
 body[data-view="works"] .wp-label2 { fill: #D9CBB3; }
 
 /* ホバー / フォーカス：ドットとリングがアクセント色に、パルスが波紋 */
@@ -342,13 +362,13 @@ body[data-view="about"] #petal-field { display: block; }
   position: relative; height: min(68vh, 620px);
   overflow-x: auto; overflow-y: hidden;
   padding: 46px 4vw 20px;
-  scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;
   cursor: grab;
   touch-action: pan-x; /* タッチはネイティブ横スクロールに任せる */
+  scrollbar-width: none; /* スクロールバーは見せない（スクロール機能は維持） */
 }
 .closet-track:active { cursor: grabbing; }
-.closet-track::-webkit-scrollbar { height: 6px; }
-.closet-track::-webkit-scrollbar-thumb { background: var(--soft); border-radius: 9999px; }
+.closet-track::-webkit-scrollbar { display: none; }
 
 .garments {
   position: relative; display: flex; align-items: flex-start;

@@ -249,10 +249,10 @@
           <p class="reveal font-mincho text-sm md:text-base leading-loose" id="hero-lead"></p>
           <p class="reveal mt-4 text-xs tracking-widest uppercase opacity-60" id="hero-name"></p>
         </div>
-        <button class="reveal group mt-12 inline-flex items-center gap-3 w-fit text-xs tracking-widest2 uppercase" data-nav="about" data-cursor>
-          <span class="hover-line">Start the journey</span>
-          <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-current/40 transition-transform duration-500 group-hover:translate-x-1">
-            <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <button class="reveal next-dest group mt-12" data-nav="about" data-cursor>
+          <span class="text-[10px] tracking-widest2 uppercase opacity-50 block">Next Destination</span>
+          <span class="font-display text-3xl md:text-4xl inline-flex items-center gap-4">Start the Journey — About
+            <svg viewBox="0 0 24 24" class="w-6 h-6 transition-transform duration-500 group-hover:translate-x-2"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
         </button>
       </div>
@@ -267,10 +267,10 @@
     <section class="view" id="view-about">
       <div class="view-inner px-6 md:px-16 pt-28 md:pt-32 pb-24">
         <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-plum mb-4">01 — About / Kochi, Where I Bloomed</p>
-        <h2 class="reveal font-display text-[13vw] md:text-[6.5vw] leading-none">
+        <h2 class="reveal pop-text font-display text-[13vw] md:text-[6.5vw] leading-none">
           FROM BUD<br/><span class="italic text-plum pl-[6vw]">TO BLOOM</span>
         </h2>
-        <p class="reveal font-mincho mt-8 max-w-xl text-sm md:text-base leading-loose" id="about-lead"></p>
+        <p class="reveal pop-text font-mincho mt-10 md:mt-56 max-w-xl text-sm md:text-base leading-loose" id="about-lead"></p>
 
         <div class="reveal mt-14">
           <div id="profile-card" class="stitched relative max-w-3xl bg-paper/90 text-ink backdrop-blur-sm rounded-2xl p-6 md:p-10 flex flex-col md:flex-row gap-8 items-start">
@@ -360,10 +360,10 @@
     <section class="view" id="view-works">
       <div class="view-inner min-h-screen px-6 md:px-16 pt-28 md:pt-32 pb-16 flex flex-col">
         <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-sand mb-4">02 — Works / From Japan to the World</p>
-        <h2 class="reveal font-display text-[13vw] md:text-[6.5vw] leading-none">
+        <h2 class="reveal pop-text font-display text-[13vw] md:text-[6.5vw] leading-none">
           TAILORED<br/><span class="italic text-sand pl-[6vw]">WORKS</span>
         </h2>
-        <p class="reveal font-mincho mt-6 max-w-xl text-sm md:text-base leading-loose opacity-90" id="works-lead"></p>
+        <p class="reveal pop-text font-mincho mt-6 max-w-xl text-sm md:text-base leading-loose opacity-90" id="works-lead"></p>
         <p class="reveal mt-3 text-[10px] tracking-widest2 uppercase opacity-60 flex items-center gap-2">
           <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="currentColor" transform="rotate(45 12 12)"/></svg>
           地球儀のピンをクリック — その国のWorkへ飛べます
@@ -383,7 +383,7 @@
         </p>
 
         <div class="reveal relative flex-1 mt-4">
-          <div id="closet" class="closet-track">
+          <div id="closet" class="closet-track" data-lenis-prevent>
             <div id="garments" class="garments"></div>
           </div>
         </div>

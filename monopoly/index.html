@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>モノポリー 特別ルール版</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;background:#20262e;color:#e8ecf1;min-height:100vh}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:8px;padding:8px 14px;font-size:14px;background:#3b4553;color:#e8ecf1;transition:filter .15s}
+button:hover:not(:disabled){filter:brightness(1.2)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.bigbtn{background:#e74c3c;color:#fff;font-size:17px;font-weight:700;padding:12px 26px}
+.greenbtn{background:#27ae60;color:#fff;font-weight:700}
+.bluebtn{background:#2980b9;color:#fff;font-weight:700}
+input,select{font-family:inherit;font-size:14px;padding:7px 10px;border-radius:8px;border:1px solid #4a5563;background:#1a1f26;color:#e8ecf1}
+.hidden{display:none!important}
+
+/* ===== セットアップ画面 ===== */
+#setup{max-width:640px;margin:32px auto;background:#2a323c;padding:30px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+#setup h1{font-size:30px;margin-bottom:4px}
+#setup .sub{color:#9aa7b5;margin-bottom:16px}
+.rulebox{background:#1a1f26;border:1px solid #3b4553;border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13px;line-height:1.8;color:#c4cdd8}
+.rulebox b{color:#f5c451}
+#setup label{display:flex;align-items:center;gap:10px;margin:12px 0;font-weight:600}
+#setup label input,#setup label select{flex:0 0 auto}
+#nameInputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.namerow{display:flex;align-items:center;gap:8px}
+.namerow .cdot{width:16px;height:16px;border-radius:50%;flex:0 0 auto}
+.namerow input{flex:1;min-width:0}
+#setup .btns{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+
+/* ===== ゲーム画面 ===== */
+#game{display:flex;gap:14px;padding:12px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+#boardWrap{flex:0 1 auto;width:min(92vh,calc(100vw - 24px),820px)}
+#board{display:grid;aspect-ratio:1;width:100%;grid-template-columns:1.6fr repeat(9,1fr) 1.6fr;grid-template-rows:1.6fr repeat(9,1fr) 1.6fr;background:#111;gap:1px;border:3px solid #111;border-radius:8px;overflow:hidden;user-select:none}
+.cell{background:#f2ecd9;color:#222;position:relative;display:flex;flex-direction:column;font-size:clamp(6.5px,1.05vw,10.5px);cursor:pointer;overflow:hidden}
+.cell:hover{filter:brightness(1.06)}
+.cell .bar{height:19%;min-height:10px;display:flex;align-items:center;justify-content:center;gap:1px;border-bottom:1px solid rgba(0,0,0,.25)}
+.cell .nm{flex:1;padding:2px 1px 0;text-align:center;line-height:1.15;overflow:hidden;font-weight:600}
+.cell .pr{text-align:center;padding-bottom:3px;font-weight:700;color:#333}
+.cell .ic{text-align:center;font-size:1.6em;line-height:1}
+.cell.corner{justify-content:center;align-items:center;font-weight:700;text-align:center;gap:2px}
+.cell.corner .ic{font-size:2em}
+.ownstrip{position:absolute;left:0;right:0;bottom:0;height:5px}
+.ownbadge{position:absolute;top:2px;right:2px;width:16px;height:16px;border-radius:50%;color:#fff;font-size:10px;font-weight:700;display:none;align-items:center;justify-content:center;border:1.5px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.6);z-index:2}
+.tok{position:absolute;bottom:6px;left:1px;right:1px;display:flex;flex-wrap:wrap;gap:1px;justify-content:center;pointer-events:none;z-index:3}
+.token{width:20px;height:20px;border-radius:50%;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.7)}
+.token.cur{animation:tokpulse 1.1s infinite}
+@keyframes tokpulse{50%{transform:scale(1.3);box-shadow:0 0 10px 3px rgba(255,255,255,.9)}}
+.cell.here{z-index:4;outline:3px solid #f5c451;outline-offset:-2px}
+.cell.canbuy .nm{color:#0a6e2e}
+@media(max-width:600px){.token{width:13px;height:13px;font-size:8px}.ownbadge{width:12px;height:12px;font-size:8px}}
+.pnum{display:inline-flex;width:20px;height:20px;border-radius:50%;color:#fff;font-weight:700;font-size:12px;align-items:center;justify-content:center;border:2px solid #fff;flex:0 0 auto;box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.hs{width:.6em;height:.6em;background:#1d9c46;border:1px solid #0c5c27;border-radius:1px}
+.hs.hotel{width:1.1em;background:#d32f2f;border-color:#7d1010}
+.cell.landing{animation:landflash 1s ease 2}
+@keyframes landflash{50%{filter:brightness(1.35)}}
+
+#center{grid-area:2/2/11/11;background:#cfe3cf;color:#1c2b1c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px;text-align:center}
+#center .logo{font-size:clamp(16px,3vw,28px);font-weight:900;letter-spacing:.18em;color:#b02a2a;text-shadow:1px 1px 0 #fff}
+#center .phase{font-size:clamp(12px,1.8vw,17px);font-weight:700}
+#center .whos{font-size:clamp(12px,1.6vw,15px)}
+#center .dice{font-size:clamp(30px,6vw,56px);line-height:1;color:#222}
+#center .note{font-size:clamp(9px,1.3vw,12px);color:#3c503c;max-width:90%;line-height:1.5}
+#center .cbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+#panel{flex:1 1 320px;min-width:300px;max-width:430px;display:flex;flex-direction:column;gap:10px}
+#phaseBar{background:#2a323c;border-radius:10px;padding:10px 14px;font-weight:700;font-size:15px}
+#players{display:flex;flex-direction:column;gap:6px}
+.pcard{background:#2a323c;border-radius:10px;padding:8px 12px;border:2px solid transparent;cursor:pointer}
+.pcard:hover{filter:brightness(1.12)}
+.pcard.current{border-color:#f5c451;background:#333d2a}
+.pcard.bankrupt{opacity:.45;text-decoration:line-through}
+.pcard .row1{display:flex;align-items:center;gap:8px}
+.pcard .cdot{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+.pcard .pname{font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard .pmoney{font-weight:700;color:#7fd88f}
+.pcard .pos{font-size:12px;color:#a9b6c4;margin-top:4px}
+.pcard .chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+.chip{width:16px;height:20px;border-radius:3px;border:1px solid rgba(255,255,255,.4);position:relative;font-size:9px;font-weight:700;color:#fff;display:flex;align-items:flex-end;justify-content:center;text-shadow:0 1px 2px rgba(0,0,0,.8)}
+#pbtns{display:flex;gap:8px;flex-wrap:wrap}
+#log{background:#1a1f26;border-radius:10px;padding:10px;height:220px;overflow-y:auto;font-size:12.5px;line-height:1.6}
+#log .le{border-bottom:1px solid #2a323c;padding:3px 0;color:#c4cdd8}
+
+/* ===== モーダル ===== */
+#modal-root .ov{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:100;padding:14px}
+#modal-root .dlg{background:#2a323c;border-radius:14px;padding:20px;width:min(720px,96vw);max-height:92vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.6)}
+.dlg h3{margin-bottom:12px;font-size:18px}
+.dlg .mbtns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:flex-end}
+.renttable{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+.renttable td{border:1px solid #3b4553;padding:4px 8px}
+.grouptag{display:inline-block;padding:2px 10px;border-radius:5px;color:#fff;font-size:12px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.assetrow{display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid #3b4553;font-size:13.5px;flex-wrap:wrap}
+.assetrow .an{flex:1;min-width:120px}
+.assetrow .houses{letter-spacing:2px}
+.debtbar{background:#4a1f1f;border:1px solid #a33;border-radius:8px;padding:10px 14px;font-weight:700;margin-bottom:10px;line-height:1.7}
+
+/* 交渉モーダル */
+.tradetop{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.tcols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.tcols{grid-template-columns:1fr}}
+.tcol{background:#1a1f26;border-radius:10px;padding:10px;border-top:4px solid #888}
+.tcol h4{font-size:14px;margin-bottom:8px}
+.tcol .mrow{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:13px}
+.tcol .mrow input{width:90px}
+.tprops{display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto}
+.tprop{display:flex;align-items:center;gap:6px;font-size:12.5px;background:#242b34;border-radius:6px;padding:4px 8px}
+.tprop.disabled{opacity:.45}
+.tprop .sw{width:10px;height:14px;border-radius:2px;flex:0 0 auto}
+#tsum{background:#1a2530;border:1px solid #2c4a63;border-radius:10px;padding:10px 14px;margin-top:12px;font-size:13.5px;line-height:1.8}
+#tsum b{color:#f5c451}
+.apbtn{width:100%;margin-top:10px;font-weight:700}
+.apbtn.on{background:#27ae60;color:#fff}
+#tmsg{margin-top:10px;text-align:center;font-weight:700;color:#7fd88f;min-height:20px}
+</style>
+</head>
+<body>
+
+<!-- ============ セットアップ ============ -->
+<div id="setup">
+  <h1>🎩 モノポリー</h1>
+  <p class="sub">特別ルール版 ／ 2〜6人・1台のデバイスで交代プレイ</p>
+  <div class="rulebox">
+    <b>【特別ルール】</b><br>
+    ・チャンス／共同基金：マスはあるがカード効果なし<br>
+    ・刑務所システムなし（マスは素通り）<br>
+    ・<b>初期購入フェーズ</b>：順番に好きな物件を購入できる（1人あたり <b>1色につき1枚</b>・鉄道1枚・公共会社1枚まで）。全員がスキップするまで続く<br>
+    ・全員スキップ後、1番手からサイコロ開始<br>
+    ・全員が1回サイコロを振ったら<b>交渉フェーズ</b>（お金＋物件を自由に取引。以降も交渉ボタンでいつでも取引可）
+  </div>
+  <label>プレイヤー人数
+    <select id="numPlayers" onchange="buildNameInputs()">
+      <option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option>
+    </select>
+  </label>
+  <div id="nameInputs"></div>
+  <label>初期資金 $ <input id="startMoney" type="number" value="1500" step="100" min="100" style="width:110px"></label>
+  <label>GO通過ボーナス $ <input id="goSalary" type="number" value="200" step="50" min="0" style="width:110px"></label>
+  <div class="btns">
+    <button class="bigbtn" onclick="startGame()">ゲーム開始</button>
+    <button id="btnResume" class="hidden bluebtn" onclick="loadSaved()">💾 前回の続きから</button>
+  </div>
+</div>
+
+<!-- ============ ゲーム画面 ============ -->
+<div id="game" class="hidden">
+  <div id="boardWrap"><div id="board"></div></div>
+  <div id="panel">
+    <div id="phaseBar"></div>
+    <div id="players"></div>
+    <div id="pbtns">
+      <button id="btnManage" onclick="openManage()">🏗️ 建設・売却</button>
+      <button id="btnTrade" onclick="openTrade()">🤝 交渉</button>
+      <button onclick="resetGame()">🔄 リセット</button>
+    </div>
+    <div id="log"></div>
+  </div>
+</div>
+
+<div id="modal-root"></div>
+
+<script>
+"use strict";
+/* ================= マスデータ（標準モノポリー準拠） ================= */
+const GROUPS={
+  brown:{c:"#955436",label:"茶"}, lblue:{c:"#aae0fa",label:"水色"},
+  pink:{c:"#d93a96",label:"ピンク"}, orange:{c:"#f7941d",label:"オレンジ"},
+  red:{c:"#ed1b24",label:"赤"}, yellow:{c:"#e8c400",label:"黄"},
+  green:{c:"#1fb25a",label:"緑"}, dblue:{c:"#0072bb",label:"紺"},
+  rail:{c:"#444444",label:"鉄道"}, util:{c:"#7f8fa6",label:"公共"}
+};
+const SQ=[
+{t:"go",n:"GO",icon:"➡️"},
+{t:"p",n:"地中海通り",g:"brown",price:60,rent:[2,10,30,90,160,250],hc:50},
+{t:"chest",n:"共同基金",icon:"📦"},
+{t:"p",n:"バルティック通り",g:"brown",price:60,rent:[4,20,60,180,320,450],hc:50},
+{t:"tax",n:"所得税",amount:200,icon:"💰"},
+{t:"rail",n:"リーディング鉄道",g:"rail",price:200,icon:"🚂"},
+{t:"p",n:"オリエンタル通り",g:"lblue",price:100,rent:[6,30,90,270,400,550],hc:50},
+{t:"chance",n:"チャンス",icon:"❓"},
+{t:"p",n:"バーモント通り",g:"lblue",price:100,rent:[6,30,90,270,400,550],hc:50},
+{t:"p",n:"コネチカット通り",g:"lblue",price:120,rent:[8,40,100,300,450,600],hc:50},
+{t:"jail",n:"刑務所（見学）",icon:"👮"},
+{t:"p",n:"セントチャールズ",g:"pink",price:140,rent:[10,50,150,450,625,750],hc:100},
+{t:"util",n:"電力会社",g:"util",price:150,icon:"💡"},
+{t:"p",n:"ステーツ通り",g:"pink",price:140,rent:[10,50,150,450,625,750],hc:100},
+{t:"p",n:"バージニア通り",g:"pink",price:160,rent:[12,60,180,500,700,900],hc:100},
+{t:"rail",n:"ペンシルベニア鉄道",g:"rail",price:200,icon:"🚂"},
+{t:"p",n:"セントジェームス",g:"orange",price:180,rent:[14,70,200,550,750,950],hc:100},
+{t:"chest",n:"共同基金",icon:"📦"},
+{t:"p",n:"テネシー通り",g:"orange",price:180,rent:[14,70,200,550,750,950],hc:100},
+{t:"p",n:"ニューヨーク通り",g:"orange",price:200,rent:[16,80,220,600,800,1000],hc:100},
+{t:"park",n:"フリーパーキング",icon:"🅿️"},
+{t:"p",n:"ケンタッキー通り",g:"red",price:220,rent:[18,90,250,700,875,1050],hc:150},
+{t:"chance",n:"チャンス",icon:"❓"},
+{t:"p",n:"インディアナ通り",g:"red",price:220,rent:[18,90,250,700,875,1050],hc:150},
+{t:"p",n:"イリノイ通り",g:"red",price:240,rent:[20,100,300,750,925,1100],hc:150},
+{t:"rail",n:"B＆O鉄道",g:"rail",price:200,icon:"🚂"},
+{t:"p",n:"アトランティック通り",g:"yellow",price:260,rent:[22,110,330,800,975,1150],hc:150},
+{t:"p",n:"ベントノール通り",g:"yellow",price:260,rent:[22,110,330,800,975,1150],hc:150},
+{t:"util",n:"水道会社",g:"util",price:150,icon:"🚰"},
+{t:"p",n:"マービン・ガーデン",g:"yellow",price:280,rent:[24,120,360,850,1025,1200],hc:150},
+{t:"gotojail",n:"刑務所行き（効果なし）",icon:"🚔"},
+{t:"p",n:"パシフィック通り",g:"green",price:300,rent:[26,130,390,900,1100,1275],hc:200},
+{t:"p",n:"ノースカロライナ通り",g:"green",price:300,rent:[26,130,390,900,1100,1275],hc:200},
+{t:"chest",n:"共同基金",icon:"📦"},
+{t:"p",n:"ペンシルベニア通り",g:"green",price:320,rent:[28,150,450,1000,1200,1400],hc:200},
+{t:"rail",n:"ショートライン鉄道",g:"rail",price:200,icon:"🚂"},
+{t:"chance",n:"チャンス",icon:"❓"},
+{t:"p",n:"パークプレイス",g:"dblue",price:350,rent:[35,175,500,1100,1300,1500],hc:200},
+{t:"tax",n:"物品税",amount:100,icon:"💎"},
+{t:"p",n:"ボードウォーク",g:"dblue",price:400,rent:[50,200,600,1400,1700,2000],hc:200}
+];
+const PCOLORS=["#e74c3c","#2980b9","#27ae60","#f39c12","#9b59b6","#16a085"];
+const DICE_CH=["⚀","⚁","⚂","⚃","⚄","⚅"];
+const SAVEKEY="monopoly_special_v1";
+
+/* ================= ユーティリティ ================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=n=>"$"+Number(n).toLocaleString("en-US");
+function gridPos(i){
+  if(i===0)return[11,11]; if(i<10)return[11,11-i]; if(i===10)return[11,1];
+  if(i<20)return[21-i,1]; if(i===20)return[1,1]; if(i<30)return[1,i-19];
+  if(i===30)return[1,11]; return[i-29,11];
+}
+function groupSquares(g){const r=[];SQ.forEach((s,i)=>{if(s.g===g)r.push(i)});return r}
+
+/* ================= 状態 ================= */
+let S=null;      // ゲーム状態（localStorageに保存）
+let T=null;      // 交渉モーダルの一時状態
+let animating=false;
+
+function save(){try{localStorage.setItem(SAVEKEY,JSON.stringify(S))}catch(e){}}
+function log(msg){S.log.unshift(msg);if(S.log.length>150)S.log.pop()}
+
+function countOwned(pi,g){return groupSquares(g).filter(i=>S.own[i]===pi).length}
+function ownsFull(pi,g){const gs=groupSquares(g);return gs.length>0&&gs.every(i=>S.own[i]===pi)}
+function groupHouseTotal(g){return groupSquares(g).reduce((a,i)=>a+(S.houses[i]||0),0)}
+function playerProps(pi){const r=[];for(let i=0;i<40;i++)if(S.own[i]===pi)r.push(i);return r}
+function alivePlayers(){return S.players.filter(p=>!p.bankrupt)}
+function cur(){return S.players[S.turn]}
+
+/* ================= セットアップ ================= */
+function buildNameInputs(){
+  const n=+$("#numPlayers").value;
+  const old=[...document.querySelectorAll("#nameInputs input")].map(i=>i.value);
+  $("#nameInputs").innerHTML=Array.from({length:n},(_,i)=>
+    `<div class="namerow"><span class="cdot" style="background:${PCOLORS[i]}"></span>
+     <input maxlength="10" placeholder="プレイヤー${i+1}" value="${esc(old[i]||"")}"></div>`).join("");
+}
+function startGame(){
+  const n=+$("#numPlayers").value;
+  const names=[...document.querySelectorAll("#nameInputs input")].map((el,i)=>el.value.trim()||`プレイヤー${i+1}`);
+  const startMoney=Math.max(100,+$("#startMoney").value||1500);
+  const goSalary=Math.max(0,+$("#goSalary").value||0);
+  S={
+    phase:"buy", turn:0, goSalary,
+    players:names.slice(0,n).map((name,i)=>({name,color:PCOLORS[i],money:startMoney,pos:0,bankrupt:false,done:false,turns:0})),
+    own:{}, houses:{},
+    dice:[1,1], lastDiceSum:0, pendingDouble:false,
+    turnState:"idle", negotiationHeld:false, debt:null, log:[]
+  };
+  log(`🎮 ゲーム開始！（${n}人・初期資金 ${fmt(startMoney)}）`);
+  log("🏠 初期購入フェーズ：順番に好きな物件を購入（1色1枚・鉄道1枚・公共1枚まで）。ボード上の物件をタップ！");
+  enterGame();
+}
+function loadSaved(){
+  try{
+    const d=JSON.parse(localStorage.getItem(SAVEKEY));
+    if(d&&d.players){S=d;enterGame();return}
+  }catch(e){}
+  alert("保存データが読み込めませんでした");
+}
+function enterGame(){
+  $("#setup").classList.add("hidden");
+  $("#game").classList.remove("hidden");
+  buildBoardDOM();
+  render(); save();
+}
+function resetGame(){
+  if(!confirm("ゲームをリセットして最初の設定に戻りますか？（保存データも消えます）"))return;
+  localStorage.removeItem(SAVEKEY); S=null;
+  $("#game").classList.add("hidden"); $("#setup").classList.remove("hidden");
+  $("#btnResume").classList.add("hidden");
+  closeModal();
+}
+
+/* ================= 盤面DOM ================= */
+function buildBoardDOM(){
+  const b=$("#board"); b.innerHTML="";
+  for(let i=0;i<40;i++){
+    const sq=SQ[i],[r,c]=gridPos(i);
+    const d=document.createElement("div");
+    d.className="cell"+(sq.t!=="p"&&sq.t!=="rail"&&sq.t!=="util"&&!sq.g?" corner":"");
+    if(!["p","rail","util"].includes(sq.t))d.classList.add("corner");
+    d.style.gridArea=`${r}/${c}`;
+    d.dataset.i=i;
+    d.title=sq.n+(sq.price?` ${fmt(sq.price)}`:"");
+    d.onclick=()=>infoModal(i);
+    let inner="";
+    if(sq.t==="p"){
+      inner=`<div class="bar" style="background:${GROUPS[sq.g].c}"></div>
+             <div class="nm">${sq.n}</div><div class="pr">${fmt(sq.price)}</div>`;
+    }else if(sq.t==="rail"||sq.t==="util"){
+      inner=`<div class="nm">${sq.n}</div><div class="ic">${sq.icon}</div><div class="pr">${fmt(sq.price)}</div>`;
+    }else if(sq.t==="tax"){
+      inner=`<div class="nm">${sq.n}</div><div class="ic">${sq.icon}</div><div class="pr">${fmt(sq.amount)}</div>`;
+    }else{
+      inner=`<div class="ic">${sq.icon}</div><div class="nm">${sq.n}</div>`;
+    }
+    d.innerHTML=inner+`<div class="ownstrip"></div><div class="ownbadge"></div><div class="tok"></div>`;
+    b.appendChild(d);
+  }
+  const center=document.createElement("div");
+  center.id="center";
+  b.appendChild(center);
+}
+function renderBoardDynamic(){
+  const inRun=(S.phase==="play"||S.phase==="negotiate");
+  for(let i=0;i<40;i++){
+    const cell=document.querySelector(`.cell[data-i="${i}"]`);
+    if(!cell)continue;
+    const sq=SQ[i],o=S.own[i];
+    const owned=(o!=null&&!S.players[o].bankrupt);
+    // 所有者表示：下ストライプ＋色枠＋番号バッジ
+    cell.querySelector(".ownstrip").style.background=owned?S.players[o].color:"transparent";
+    const badge=cell.querySelector(".ownbadge");
+    if(owned){
+      badge.style.display="flex";badge.style.background=S.players[o].color;
+      badge.textContent=o+1;badge.title=`所有者：${S.players[o].name}`;
+      cell.style.boxShadow=`inset 0 0 0 3px ${S.players[o].color}`;
+      cell.classList.remove("canbuy");
+    }else{
+      badge.style.display="none";
+      // 初期購入フェーズ：今の手番が買えるマスを緑枠で強調
+      const canbuy=S.phase==="buy"&&["p","rail","util"].includes(sq.t)&&!initialBuyBlockReason(S.turn,i);
+      cell.classList.toggle("canbuy",canbuy);
+      cell.style.boxShadow=canbuy?"inset 0 0 0 3px #27ae60":"";
+    }
+    // 家表示（カラーバー内）
+    if(sq.t==="p"){
+      const bar=cell.querySelector(".bar");
+      const h=S.houses[i]||0;
+      bar.innerHTML=h===5?`<span class="hs hotel"></span>`:Array.from({length:h},()=>`<span class="hs"></span>`).join("");
+    }
+    // コマ（手番プレイヤーは点滅）
+    const tok=cell.querySelector(".tok");
+    tok.innerHTML=S.players.map((p,pi)=>(!p.bankrupt&&p.pos===i)?
+      `<span class="token ${inRun&&pi===S.turn?"cur":""}" style="background:${p.color}" title="${esc(p.name)}">${pi+1}</span>`:"").join("");
+    // 手番プレイヤーの現在地を金枠で表示
+    cell.classList.toggle("here",inRun&&!cur().bankrupt&&cur().pos===i);
+  }
+}
+
+/* ================= 描画 ================= */
+function render(){
+  renderBoardDynamic();
+  renderCenter();
+  renderPanel();
+}
+function phaseLabel(){
+  return {buy:"🏠 初期購入フェーズ",play:"🎲 通常フェーズ",negotiate:"🤝 交渉フェーズ",over:"🏆 ゲーム終了"}[S.phase]||"";
+}
+function renderCenter(){
+  const c=$("#center"); if(!c)return;
+  const p=cur();
+  let html=`<div class="logo">MONOPOLY</div><div class="phase">${phaseLabel()}</div>`;
+  if(S.phase==="buy"){
+    const remaining=S.players.filter(q=>!q.done).length;
+    html+=`<div class="whos">手番：<span class="pnum" style="background:${p.color}">${S.turn+1}</span> <b style="color:${p.color}">${esc(p.name)}</b>（所持金 ${fmt(p.money)}）</div>
+    <div class="note"><b style="color:#1d7a3c">緑枠のマス</b>が今買える物件。タップして購入。<br>1色につき1枚／鉄道1枚／公共1枚まで。<br>残り参加者：${remaining}人</div>
+    <div class="cbtns"><button class="bigbtn" onclick="skipInitial()">スキップして抜ける</button></div>`;
+  }else if(S.phase==="play"){
+    html+=`<div class="whos">手番：<span class="pnum" style="background:${p.color}">${S.turn+1}</span> <b style="color:${p.color}">${esc(p.name)}</b>　📍 ${esc(SQ[p.pos].n)}</div>
+    <div class="dice">${DICE_CH[S.dice[0]-1]} ${DICE_CH[S.dice[1]-1]}</div>`;
+    if(S.turnState==="roll"){
+      html+=`<div class="cbtns"><button class="bigbtn" onclick="rollDice()">🎲 サイコロを振る</button></div>`;
+      if(S.pendingDouble)html+=`<div class="note">ゾロ目！もう一度振れます</div>`;
+    }else if(S.turnState==="moving"){
+      html+=`<div class="note">移動中…</div>`;
+    }else if(S.turnState==="act"){
+      html+=`<div class="cbtns"><button class="bigbtn greenbtn" onclick="endTurn()">✅ ターン終了</button></div>
+      <div class="note">建設・売却・交渉は右のボタンから</div>`;
+    }
+  }else if(S.phase==="negotiate"){
+    html+=`<div class="note">全員が1回サイコロを振りました。<br>お金と物件を自由に取引できます。</div>
+    <div class="cbtns">
+      <button class="bigbtn bluebtn" onclick="openTrade()">🤝 取引パネルを開く</button>
+      <button class="greenbtn" onclick="endNegotiation()">交渉を終えてゲーム再開 ▶</button>
+    </div>`;
+  }else if(S.phase==="over"){
+    const w=alivePlayers()[0];
+    html+=`<div class="whos" style="font-size:20px">🏆 <b>${esc(w?w.name:"—")}</b> の勝利！</div>
+    <div class="cbtns"><button class="bigbtn" onclick="resetGame()">新しいゲーム</button></div>`;
+  }
+  c.innerHTML=html;
+}
+function renderPanel(){
+  const p=cur();
+  $("#phaseBar").innerHTML=S.phase==="over"?phaseLabel():
+    `${phaseLabel()}　<span style="font-weight:400;font-size:13px">手番：</span><span class="pnum" style="background:${p.color}">${S.turn+1}</span> <span style="color:${p.color}">${esc(p.name)}</span>`;
+  $("#players").innerHTML=S.players.map((p,pi)=>{
+    const props=playerProps(pi);
+    const chips=props.map(i=>{
+      const sq=SQ[i],h=S.houses[i]||0;
+      return `<span class="chip" style="background:${GROUPS[sq.g].c}" title="${esc(sq.n)}${h?`（${h===5?"ホテル":"家"+h+"軒"}）`:""}">${h?(h===5?"H":h):""}</span>`;
+    }).join("");
+    return `<div class="pcard ${pi===S.turn&&S.phase!=="over"?"current":""} ${p.bankrupt?"bankrupt":""}" onclick="playerModal(${pi})" title="タップで資産の詳細を表示">
+      <div class="row1"><span class="pnum" style="background:${p.color}">${pi+1}</span>
+      <span class="pname">${esc(p.name)}${S.phase==="buy"&&p.done?" （購入終了）":""}${pi===S.turn&&S.phase!=="over"?" ◀ 手番":""}</span>
+      <span class="pmoney">${fmt(p.money)}</span></div>
+      <div class="pos">📍 ${p.bankrupt?"—":SQ[p.pos].n}　｜　🏠 物件 ${props.length}件</div>
+      <div class="chips">${chips||'<span style="font-size:11px;color:#7d8896">物件なし</span>'}</div>
+    </div>`;
+  }).join("");
+  const inPlay=(S.phase==="play"&&(S.turnState==="roll"||S.turnState==="act"));
+  $("#btnManage").disabled=!(inPlay||S.phase==="negotiate");
+  $("#btnTrade").disabled=!(inPlay||S.phase==="negotiate");
+  $("#log").innerHTML=S.log.map(m=>`<div class="le">${m}</div>`).join("");
+}
+
+/* ================= プレイヤー詳細モーダル ================= */
+function playerModal(pi){
+  if(animating||!S)return;
+  const p=S.players[pi];
+  const props=playerProps(pi);
+  const rows=props.length?props.map(i=>{
+    const sq=SQ[i],h=S.houses[i]||0;
+    return `<div class="assetrow">
+      <span class="grouptag" style="background:${GROUPS[sq.g].c};padding:2px 8px">${GROUPS[sq.g].label}</span>
+      <span class="an">${esc(sq.n)} ${h?(h===5?"🏨":"🏠".repeat(h)):""}</span>
+      <span style="color:#9aa7b5;font-size:12px">レンタル料 ${p.bankrupt?"—":(SQ[i].t==="util"?`サイコロ×${countOwned(pi,"util")===2?10:4}`:fmt(calcRent(i)))}</span>
+    </div>`;
+  }).join(""):"<p style='color:#9aa7b5'>物件を持っていません</p>";
+  modal(`<h3><span class="pnum" style="background:${p.color}">${pi+1}</span> ${esc(p.name)} の資産${p.bankrupt?"（破産済み）":""}</h3>
+  <p>💵 所持金：<b style="color:#7fd88f">${fmt(p.money)}</b>　📍 現在地：<b>${p.bankrupt?"—":esc(SQ[p.pos].n)}</b></p>
+  <h4 style="margin:12px 0 4px">所有物件（${props.length}件）</h4>${rows}
+  <div class="mbtns"><button onclick="closeModal()">閉じる</button></div>`);
+}
+
+/* ================= モーダル共通 ================= */
+function modal(html,locked){
+  $("#modal-root").innerHTML=`<div class="ov" ${locked?"":'onclick="if(event.target===this)closeModal()"'}><div class="dlg">${html}</div></div>`;
+}
+function closeModal(){$("#modal-root").innerHTML="";T=null}
+
+/* ================= マス情報モーダル ================= */
+function infoModal(i){
+  if(animating)return;
+  const sq=SQ[i];
+  let html="";
+  if(["p","rail","util"].includes(sq.t)){
+    const o=S.own[i];
+    const tag=`<span class="grouptag" style="background:${GROUPS[sq.g].c}">${GROUPS[sq.g].label}</span>`;
+    html=`<h3>${tag} ${esc(sq.n)}</h3><p>価格：<b>${fmt(sq.price)}</b>　所有者：<b>${o!=null?esc(S.players[o].name):"（銀行／未所有）"}</b></p>`;
+    if(sq.t==="p"){
+      const h=S.houses[i]||0;
+      html+=`<table class="renttable">
+      <tr><td>レンタル料（土地のみ）</td><td>${fmt(sq.rent[0])}（色独占で2倍）</td></tr>
+      <tr><td>家1〜4軒</td><td>${sq.rent.slice(1,5).map(fmt).join(" / ")}</td></tr>
+      <tr><td>ホテル</td><td>${fmt(sq.rent[5])}</td></tr>
+      <tr><td>家の建設費</td><td>${fmt(sq.hc)}／軒</td></tr></table>
+      ${h?`<p>現在の建物：${h===5?"🏨 ホテル":"🏠".repeat(h)}</p>`:""}`;
+    }else if(sq.t==="rail"){
+      html+=`<table class="renttable"><tr><td>所有数 1/2/3/4</td><td>$25 / $50 / $100 / $200</td></tr></table>`;
+    }else{
+      html+=`<table class="renttable"><tr><td>1社所有</td><td>サイコロの目 ×4</td></tr><tr><td>2社所有</td><td>サイコロの目 ×10</td></tr></table>`;
+    }
+    // 初期購入フェーズの購入ボタン
+    if(S.phase==="buy"&&o==null){
+      const p=cur();
+      const reason=initialBuyBlockReason(S.turn,i);
+      html+=`<div class="mbtns">
+        <button class="bigbtn" ${reason?"disabled":""} onclick="initialBuy(${i})">🛒 ${esc(p.name)} が購入（${fmt(sq.price)}）</button>
+      </div>${reason?`<p style="color:#f5c451;font-size:13px;margin-top:8px">⚠️ ${reason}</p>`:""}`;
+    }
+  }else{
+    const notes={go:`通過・到着で ${fmt(S.goSalary)} もらえるスタート地点`,chance:"特別ルール：カードなし。何も起こらない",chest:"特別ルール：カードなし。何も起こらない",jail:"特別ルール：刑務所なし。ただの見学",gotojail:"特別ルール：刑務所なし。何も起こらない",park:"何も起こらない休憩マス",tax:`止まると銀行に ${fmt(sq.amount||0)} 支払う`};
+    html=`<h3>${sq.icon||""} ${esc(sq.n)}</h3><p>${notes[sq.t]||""}</p>`;
+  }
+  html+=`<div class="mbtns"><button onclick="closeModal()">閉じる</button></div>`;
+  modal(html);
+}
+
+/* ================= 初期購入フェーズ ================= */
+function initialBuyBlockReason(pi,i){
+  const sq=SQ[i],p=S.players[pi];
+  if(S.own[i]!=null)return "すでに所有者がいます";
+  if(p.money<sq.price)return "所持金が足りません";
+  if(countOwned(pi,sq.g)>=1){
+    const lbl=sq.t==="rail"?"鉄道":sq.t==="util"?"公共会社":`${GROUPS[sq.g].label}色`;
+    return `このフェーズで${lbl}はすでに1枚購入済みです`;
+  }
+  return null;
+}
+function initialBuy(i){
+  if(S.phase!=="buy")return;
+  if(initialBuyBlockReason(S.turn,i))return;
+  const p=cur(),sq=SQ[i];
+  p.money-=sq.price; S.own[i]=S.turn;
+  log(`🛒 ${esc(p.name)} が <b>${sq.n}</b> を ${fmt(sq.price)} で購入`);
+  closeModal();
+  advanceInitial();
+}
+function skipInitial(){
+  if(S.phase!=="buy")return;
+  cur().done=true;
+  log(`⏭️ ${esc(cur().name)} は購入フェーズから抜けた`);
+  advanceInitial();
+}
+function advanceInitial(){
+  let next=-1;
+  for(let k=1;k<=S.players.length;k++){
+    const i=(S.turn+k)%S.players.length;
+    if(!S.players[i].done){next=i;break}
+  }
+  if(next<0){beginPlay();return}
+  S.turn=next;
+  render(); save();
+}
+function beginPlay(){
+  S.phase="play"; S.turn=0; S.turnState="roll"; S.pendingDouble=false;
+  S.players.forEach(p=>p.turns=0);
+  log("🎲 全員がスキップ！ 1番手からサイコロフェーズ開始");
+  render(); save();
+}
+
+/* ================= サイコロ・移動 ================= */
+function rollDice(){
+  if(S.phase!=="play"||S.turnState!=="roll"||animating)return;
+  const d1=1+Math.floor(Math.random()*6),d2=1+Math.floor(Math.random()*6);
+  S.dice=[d1,d2]; S.lastDiceSum=d1+d2;
+  S.pendingDouble=(d1===d2);
+  S.turnState="moving";
+  log(`🎲 ${esc(cur().name)}：${d1}＋${d2}＝${d1+d2}${d1===d2?"（ゾロ目！）":""}`);
+  render();
+  animateMove(d1+d2,resolveLanding);
+}
+function animateMove(steps,cb){
+  animating=true;
+  const p=cur();
+  let left=steps;
+  const t=setInterval(()=>{
+    p.pos=(p.pos+1)%40;
+    if(p.pos===0&&S.goSalary>0){
+      p.money+=S.goSalary;
+      log(`💰 ${esc(p.name)} がGOを通過：＋${fmt(S.goSalary)}`);
+    }
+    renderBoardDynamic(); renderPanel();
+    if(--left<=0){
+      clearInterval(t); animating=false;
+      const cell=document.querySelector(`.cell[data-i="${p.pos}"]`);
+      if(cell){cell.classList.remove("landing");void cell.offsetWidth;cell.classList.add("landing")}
+      cb();
+    }
+  },150);
+}
+
+/* ================= 着地処理 ================= */
+function resolveLanding(){
+  const p=cur(),i=p.pos,sq=SQ[i];
+  if(["p","rail","util"].includes(sq.t)){
+    const o=S.own[i];
+    if(o==null){offerBuy(i);return}                    // 購入するか選択（postLandingはモーダル側で）
+    if(o!==S.turn&&!S.players[o].bankrupt){
+      const rent=calcRent(i);
+      log(`🏠 ${esc(p.name)} は ${esc(S.players[o].name)} の <b>${sq.n}</b> に到着`);
+      charge(S.turn,rent,o,`レンタル料`);return          // chargeがpostLandingを呼ぶ
+    }
+    log(`📍 ${esc(p.name)} は自分の <b>${sq.n}</b> に到着`);
+  }else if(sq.t==="tax"){
+    log(`💰 ${esc(p.name)} は <b>${sq.n}</b> に到着`);
+    charge(S.turn,sq.amount,null,sq.n);return
+  }else if(sq.t==="chance"||sq.t==="chest"){
+    log(`${sq.icon} ${esc(p.name)} は <b>${sq.n}</b> に到着（特別ルール：カードなし）`);
+  }else if(sq.t==="gotojail"){
+    log(`🚔 ${esc(p.name)} は「刑務所行き」に到着（特別ルール：刑務所なし、何も起こらない）`);
+  }else if(sq.t==="jail"){
+    log(`👮 ${esc(p.name)} は刑務所を見学中（刑務所システムなし）`);
+  }else if(sq.t==="park"){
+    log(`🅿️ ${esc(p.name)} はフリーパーキングでひと休み`);
+  }else if(sq.t==="go"){
+    log(`➡️ ${esc(p.name)} はGOに到着`);
+  }
+  postLanding();
+}
+function calcRent(i){
+  const sq=SQ[i],o=S.own[i];
+  if(sq.t==="rail")return[25,50,100,200][countOwned(o,"rail")-1];
+  if(sq.t==="util")return(countOwned(o,"util")===2?10:4)*S.lastDiceSum;
+  const h=S.houses[i]||0;
+  if(h>0)return sq.rent[h];
+  return ownsFull(o,sq.g)?sq.rent[0]*2:sq.rent[0];
+}
+function postLanding(){
+  const p=cur();
+  if(p.bankrupt){endTurn();return}
+  if(S.pendingDouble){S.turnState="roll"}
+  else{S.turnState="act"}
+  render(); save();
+}
+
+/* --- 着地時の購入 --- */
+function offerBuy(i){
+  const p=cur(),sq=SQ[i];
+  const afford=p.money>=sq.price;
+  modal(`<h3><span class="grouptag" style="background:${GROUPS[sq.g].c}">${GROUPS[sq.g].label}</span> ${esc(sq.n)}</h3>
+  <p>未所有の物件です。価格：<b>${fmt(sq.price)}</b>（所持金 ${fmt(p.money)}）</p>
+  ${afford?"":'<p style="color:#f5c451">⚠️ 所持金が足りません</p>'}
+  <div class="mbtns">
+    <button onclick="passBuy()">パスする</button>
+    <button class="bigbtn" ${afford?"":"disabled"} onclick="buyLanded(${i})">🛒 購入する</button>
+  </div>`,true);
+}
+function buyLanded(i){
+  const p=cur(),sq=SQ[i];
+  if(p.money<sq.price)return;
+  p.money-=sq.price; S.own[i]=S.turn;
+  log(`🛒 ${esc(p.name)} が <b>${sq.n}</b> を ${fmt(sq.price)} で購入`);
+  closeModal(); postLanding();
+}
+function passBuy(){closeModal();postLanding()}
+
+/* ================= 支払い・借金・破産 ================= */
+function charge(payer,amount,to,reason){
+  const p=S.players[payer];
+  if(p.money>=amount){
+    p.money-=amount;
+    if(to!=null)S.players[to].money+=amount;
+    log(`💸 ${esc(p.name)} は${reason} ${fmt(amount)} を${to!=null?esc(S.players[to].name)+"に":""}支払った`);
+    postLanding();
+  }else{
+    S.debt={payer,amount,to,reason};
+    log(`⚠️ ${esc(p.name)} は ${fmt(amount)} を支払えない！ 資産を売却するか破産…`);
+    render(); debtModal(); save();
+  }
+}
+function canRemoveHouse(i){
+  const g=SQ[i].g,h=S.houses[i]||0;
+  if(h<=0)return false;
+  const mx=Math.max(...groupSquares(g).map(j=>S.houses[j]||0));
+  return h===mx;
+}
+function canSellProp(i){return groupHouseTotal(SQ[i].g)===0}
+function sellHouseOf(pi,i){
+  if(S.own[i]!==pi||!canRemoveHouse(i))return;
+  S.houses[i]--; S.players[pi].money+=SQ[i].hc/2;
+  log(`🔨 ${esc(S.players[pi].name)} は ${SQ[i].n} の建物を売却（＋${fmt(SQ[i].hc/2)}）`);
+}
+function sellPropOf(pi,i){
+  if(S.own[i]!==pi||!canSellProp(i))return;
+  delete S.own[i]; S.players[pi].money+=SQ[i].price/2;
+  log(`🏦 ${esc(S.players[pi].name)} は <b>${SQ[i].n}</b> を銀行に売却（＋${fmt(SQ[i].price/2)}）`);
+}
+function debtModal(){
+  const d=S.debt; if(!d)return;
+  const p=S.players[d.payer];
+  const rows=playerProps(d.payer).map(i=>{
+    const sq=SQ[i],h=S.houses[i]||0;
+    return `<div class="assetrow">
+      <span class="sw grouptag" style="background:${GROUPS[sq.g].c};padding:2px 8px">${GROUPS[sq.g].label}</span>
+      <span class="an">${esc(sq.n)} ${h?(h===5?"🏨":"🏠".repeat(h)):""}</span>
+      ${sq.t==="p"&&h>0?`<button ${canRemoveHouse(i)?"":"disabled"} onclick="debtSellHouse(${i})">建物売却 ＋${fmt(sq.hc/2)}</button>`:""}
+      <button ${canSellProp(i)?"":"disabled"} onclick="debtSellProp(${i})">物件売却 ＋${fmt(sq.price/2)}</button>
+    </div>`;
+  }).join("");
+  modal(`<h3>⚠️ 支払い不足！</h3>
+  <div class="debtbar">${esc(p.name)} → ${d.to!=null?esc(S.players[d.to].name):"銀行"}：${d.reason} <b>${fmt(d.amount)}</b><br>
+  所持金 <b>${fmt(p.money)}</b> ／ 不足 <b style="color:#ff8a8a">${fmt(Math.max(0,d.amount-p.money))}</b></div>
+  ${rows||"<p>売却できる資産がありません…</p>"}
+  <div class="mbtns">
+    <button style="background:#7d1010;color:#fff" onclick="goBankrupt()">💥 破産する</button>
+    <button class="bigbtn greenbtn" ${p.money>=d.amount?"":"disabled"} onclick="payDebt()">支払う（${fmt(d.amount)}）</button>
+  </div>`,true);
+}
+function debtSellHouse(i){sellHouseOf(S.debt.payer,i);renderPanel();renderBoardDynamic();debtModal();save()}
+function debtSellProp(i){sellPropOf(S.debt.payer,i);renderPanel();renderBoardDynamic();debtModal();save()}
+function payDebt(){
+  const d=S.debt,p=S.players[d.payer];
+  if(p.money<d.amount)return;
+  p.money-=d.amount;
+  if(d.to!=null)S.players[d.to].money+=d.amount;
+  log(`💸 ${esc(p.name)} は${d.reason} ${fmt(d.amount)} を支払った`);
+  S.debt=null; closeModal();
+  postLanding();
+}
+function goBankrupt(){
+  const d=S.debt,p=S.players[d.payer];
+  // 建物を強制換金 → 残り全財産を債権者へ
+  playerProps(d.payer).forEach(i=>{
+    const h=S.houses[i]||0;
+    if(h>0){p.money+=SQ[i].hc/2*h;S.houses[i]=0}
+  });
+  playerProps(d.payer).forEach(i=>{
+    if(d.to!=null)S.own[i]=d.to; else delete S.own[i];
+  });
+  if(d.to!=null)S.players[d.to].money+=Math.max(0,p.money);
+  p.money=0; p.bankrupt=true;
+  log(`💥 <b>${esc(p.name)} は破産！</b> ${d.to!=null?`全財産は ${esc(S.players[d.to].name)} のものに`:"物件は銀行に返却"}`);
+  S.debt=null; closeModal();
+  if(checkWinner())return;
+  if(cur().bankrupt){endTurn()}else{postLanding()}
+}
+function checkWinner(){
+  const alive=alivePlayers();
+  if(alive.length<=1){
+    S.phase="over"; S.turnState="idle";
+    log(`🏆 <b>${esc(alive[0]?alive[0].name:"—")} の勝利！</b>`);
+    render(); save();
+    return true;
+  }
+  return false;
+}
+
+/* ================= ターン終了・交渉フェーズ移行 ================= */
+function endTurn(){
+  const p=cur();
+  p.turns=(p.turns||0)+1;
+  S.pendingDouble=false;
+  let n=S.turn;
+  do{n=(n+1)%S.players.length}while(S.players[n].bankrupt);
+  S.turn=n; S.turnState="roll"; S.dice=[1,1];
+  if(!S.negotiationHeld&&alivePlayers().every(q=>(q.turns||0)>=1)){
+    S.negotiationHeld=true; S.phase="negotiate";
+    log("🤝 <b>全員が1回サイコロを振った → 交渉フェーズ開始！</b> お金と物件を自由に取引しよう");
+  }
+  render(); save();
+}
+function endNegotiation(){
+  S.phase="play"; S.turnState="roll";
+  log("▶️ 交渉フェーズ終了。ゲーム再開！");
+  closeModal(); render(); save();
+}
+
+/* ================= 建設・売却モーダル ================= */
+function canAddHouse(pi,i){
+  const sq=SQ[i];
+  if(sq.t!=="p"||S.own[i]!==pi||!ownsFull(pi,sq.g))return false;
+  const h=S.houses[i]||0;
+  if(h>=5)return false;
+  const mn=Math.min(...groupSquares(sq.g).map(j=>S.houses[j]||0));
+  return h===mn&&S.players[pi].money>=sq.hc;
+}
+function openManage(){
+  if(!S||S.debt)return;
+  renderManage();
+}
+function renderManage(){
+  const pi=S.turn,p=S.players[pi];
+  const props=playerProps(pi);
+  const buildGroups=[...new Set(props.map(i=>SQ[i].g))].filter(g=>GROUPS[g]&&!["rail","util"].includes(g)&&ownsFull(pi,g));
+  let buildHTML="";
+  if(buildGroups.length){
+    buildHTML=buildGroups.map(g=>groupSquares(g).map(i=>{
+      const sq=SQ[i],h=S.houses[i]||0;
+      return `<div class="assetrow">
+        <span class="grouptag" style="background:${GROUPS[g].c};padding:2px 8px">${GROUPS[g].label}</span>
+        <span class="an">${esc(sq.n)}</span>
+        <span class="houses">${h===5?"🏨":"🏠".repeat(h)||"—"}</span>
+        <button ${canRemoveHouse(i)&&S.own[i]===pi?"":"disabled"} onclick="mgRem(${i})">−売却 ＋${fmt(sq.hc/2)}</button>
+        <button ${canAddHouse(pi,i)?"":"disabled"} onclick="mgAdd(${i})">＋建設 −${fmt(sq.hc)}</button>
+      </div>`;
+    }).join("")).join("");
+  }else{
+    buildHTML=`<p style="color:#9aa7b5;font-size:13px">同色を全て揃えると家・ホテルを建設できます（家4軒の次はホテル）</p>`;
+  }
+  const sellHTML=props.length?props.map(i=>{
+    const sq=SQ[i];
+    return `<div class="assetrow">
+      <span class="grouptag" style="background:${GROUPS[sq.g].c};padding:2px 8px">${GROUPS[sq.g].label}</span>
+      <span class="an">${esc(sq.n)}</span>
+      <button ${canSellProp(i)?"":"disabled"} onclick="mgSell(${i})">銀行に売却 ＋${fmt(sq.price/2)}</button>
+    </div>`;
+  }).join(""):`<p style="color:#9aa7b5;font-size:13px">物件を持っていません</p>`;
+  modal(`<h3>🏗️ ${esc(p.name)} の建設・売却（所持金 <span style="color:#7fd88f">${fmt(p.money)}</span>）</h3>
+  <h4 style="margin:10px 0 4px">建設（同色コンプリートの物件・均等に建てる）</h4>${buildHTML}
+  <h4 style="margin:16px 0 4px">物件を銀行へ売却（半額・グループに建物がない場合のみ）</h4>${sellHTML}
+  <div class="mbtns"><button onclick="closeModal()">閉じる</button></div>`);
+}
+function mgAdd(i){
+  const pi=S.turn;
+  if(!canAddHouse(pi,i))return;
+  S.houses[i]=(S.houses[i]||0)+1; S.players[pi].money-=SQ[i].hc;
+  log(`🏗️ ${esc(S.players[pi].name)} は ${SQ[i].n} に${S.houses[i]===5?"🏨 ホテル":"🏠 家"}を建設（−${fmt(SQ[i].hc)}）`);
+  renderManage(); render(); save();
+}
+function mgRem(i){sellHouseOf(S.turn,i);renderManage();render();save()}
+function mgSell(i){sellPropOf(S.turn,i);renderManage();render();save()}
+
+/* ================= 交渉（トレード） ================= */
+function openTrade(){
+  if(!S||S.debt)return;
+  const alive=S.players.map((p,i)=>({p,i})).filter(x=>!x.p.bankrupt);
+  if(alive.length<2)return;
+  const a=(S.players[S.turn]&&!S.players[S.turn].bankrupt)?S.turn:alive[0].i;
+  const b=alive.find(x=>x.i!==a).i;
+  T={a,b,mA:0,mB:0,pA:[],pB:[],okA:false,okB:false,msg:""};
+  renderTrade();
+}
+function tradeColHTML(side){
+  const pi=side==="A"?T.a:T.b;
+  const p=S.players[pi];
+  const money=side==="A"?T.mA:T.mB;
+  const sel=side==="A"?T.pA:T.pB;
+  const props=playerProps(pi).map(i=>{
+    const sq=SQ[i];
+    const blocked=groupHouseTotal(sq.g)>0;
+    return `<label class="tprop ${blocked?"disabled":""}" ${blocked?'title="建物のある色グループの物件は取引できません（先に建物を売却）"':""}>
+      <input type="checkbox" ${sel.includes(i)?"checked":""} ${blocked?"disabled":""} onchange="trToggleProp('${side}',${i},this.checked)">
+      <span class="sw" style="background:${GROUPS[sq.g].c}"></span>${esc(sq.n)}
+    </label>`;
+  }).join("");
+  return `<div class="tcol" style="border-top-color:${p.color}">
+    <h4>● ${esc(p.name)}（所持金 ${fmt(p.money)}）が渡すもの</h4>
+    <div class="mrow">💵 お金 $ <input type="number" min="0" max="${p.money}" step="10" value="${money}" oninput="trMoney('${side}',this.value)"></div>
+    <div class="tprops">${props||'<span style="font-size:12px;color:#7d8896">物件なし</span>'}</div>
+    <button class="apbtn ${side==="A"?(T.okA?"on":""):(T.okB?"on":"")}" id="ap${side}" onclick="trApprove('${side}')"></button>
+  </div>`;
+}
+function renderTrade(){
+  const alive=S.players.map((p,i)=>({p,i})).filter(x=>!x.p.bankrupt);
+  const opts=who=>alive.map(x=>`<option value="${x.i}" ${x.i===(who==="A"?T.a:T.b)?"selected":""}>${esc(x.p.name)}</option>`).join("");
+  modal(`<h3>🤝 交渉・取引</h3>
+  <div class="tradetop">
+    <select onchange="trSetPlayer('A',this.value)">${opts("A")}</select>
+    <b style="font-size:18px">⇄</b>
+    <select onchange="trSetPlayer('B',this.value)">${opts("B")}</select>
+    <span style="font-size:12px;color:#9aa7b5">双方が承認すると自動で交換されます</span>
+  </div>
+  <div class="tcols">${tradeColHTML("A")}${tradeColHTML("B")}</div>
+  <div id="tsum"></div>
+  <div id="tmsg">${T.msg||""}</div>
+  <div class="mbtns"><button onclick="closeModal()">閉じる</button></div>`);
+  updateTradeLive();
+}
+function offerText(pi,money,props){
+  const parts=[];
+  if(money>0)parts.push(`<b>${fmt(money)}</b>`);
+  props.forEach(i=>parts.push(`<b>${SQ[i].n}</b>`));
+  return parts.length?parts.join(" ＋ "):"なし";
+}
+function updateTradeLive(){
+  const A=S.players[T.a],B=S.players[T.b];
+  const same=T.a===T.b;
+  $("#tsum").innerHTML=same?`⚠️ 同じプレイヤー同士では取引できません`:
+  `📢 <u>取引内容（リアルタイム）</u><br>
+   ● ${esc(A.name)} が渡す：${offerText(T.a,T.mA,T.pA)}<br>
+   ● ${esc(B.name)} が渡す：${offerText(T.b,T.mB,T.pB)}<br>
+   承認状況：${esc(A.name)} ${T.okA?"✅":"⬜"}　${esc(B.name)} ${T.okB?"✅":"⬜"}`;
+  const apA=$("#apA"),apB=$("#apB");
+  if(apA){apA.textContent=(T.okA?"✅ 承認済み（タップで取消）":`${A.name} が承認する`);apA.classList.toggle("on",T.okA);apA.disabled=same}
+  if(apB){apB.textContent=(T.okB?"✅ 承認済み（タップで取消）":`${B.name} が承認する`);apB.classList.toggle("on",T.okB);apB.disabled=same}
+}
+function trSetPlayer(side,v){
+  v=+v;
+  if(side==="A"){T.a=v;T.mA=0;T.pA=[]}else{T.b=v;T.mB=0;T.pB=[]}
+  T.okA=T.okB=false;T.msg="";
+  renderTrade();
+}
+function trMoney(side,v){
+  const pi=side==="A"?T.a:T.b;
+  const m=Math.max(0,Math.min(S.players[pi].money,Math.floor(+v||0)));
+  if(side==="A")T.mA=m;else T.mB=m;
+  T.okA=T.okB=false; updateTradeLive();
+}
+function trToggleProp(side,i,on){
+  const arr=side==="A"?T.pA:T.pB;
+  const idx=arr.indexOf(i);
+  if(on&&idx<0)arr.push(i);
+  if(!on&&idx>=0)arr.splice(idx,1);
+  T.okA=T.okB=false; updateTradeLive();
+}
+function trApprove(side){
+  if(T.a===T.b)return;
+  if(side==="A")T.okA=!T.okA;else T.okB=!T.okB;
+  if(T.okA&&T.okB){execTrade();return}
+  updateTradeLive();
+}
+function execTrade(){
+  const A=S.players[T.a],B=S.players[T.b];
+  // 最終検証
+  if(T.mA>A.money||T.mB>B.money||
+     T.pA.some(i=>S.own[i]!==T.a||groupHouseTotal(SQ[i].g)>0)||
+     T.pB.some(i=>S.own[i]!==T.b||groupHouseTotal(SQ[i].g)>0)){
+    T.okA=T.okB=false;T.msg="⚠️ 取引内容が無効になったためキャンセルされました";renderTrade();return;
+  }
+  A.money+=T.mB-T.mA; B.money+=T.mA-T.mB;
+  T.pA.forEach(i=>S.own[i]=T.b);
+  T.pB.forEach(i=>S.own[i]=T.a);
+  log(`🤝 <b>取引成立！</b> ${esc(A.name)}［${offerText(T.a,T.mA,T.pA)}］⇄ ${esc(B.name)}［${offerText(T.b,T.mB,T.pB)}］`);
+  const a=T.a,b=T.b;
+  T={a,b,mA:0,mB:0,pA:[],pB:[],okA:false,okB:false,msg:"🎉 取引成立！自動で交換しました"};
+  renderTrade(); render(); save();
+}
+
+/* ================= 起動 ================= */
+buildNameInputs();
+if(localStorage.getItem(SAVEKEY)){$("#btnResume").classList.remove("hidden")}
+</script>
+</body>
+</html>

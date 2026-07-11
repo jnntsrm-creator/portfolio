@@ -359,9 +359,9 @@ body[data-view="about"] #petal-field { display: block; }
    WORKS：クローゼット
 ============================================================ */
 .closet-track {
-  position: relative; height: min(68vh, 620px);
+  position: relative; height: min(72vh, 640px);
   overflow-x: auto; overflow-y: hidden;
-  padding: 46px 4vw 20px;
+  padding: 40px 4vw 16px;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
   touch-action: pan-x; /* タッチはネイティブ横スクロールに任せる */
@@ -397,7 +397,7 @@ body[data-view="about"] #petal-field { display: block; }
 
 .garment {
   position: relative; flex: 0 0 auto;
-  width: clamp(170px, 21vw, 230px); padding-top: 6px;
+  width: clamp(160px, 18vw, 208px); padding-top: 6px;
   background: none; border: none; cursor: pointer;
   transform-origin: 50% 4px;
   animation: hang-idle 6s ease-in-out infinite;
@@ -455,11 +455,11 @@ body[data-view="about"] #petal-field { display: block; }
 }
 
 .garment-label {
-  position: relative; z-index: 2; padding: 14px 14px 20px;
+  position: relative; z-index: 2; padding: 12px 14px 16px;
   background: linear-gradient(180deg, #2E2B23, #211f19);
 }
 .garment-label .g-cat  { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #D9CBB3; opacity: 0.8; }
-.garment-label .g-name { font-family: "Cormorant Garamond", serif; font-size: 1.55rem; line-height: 1.05; margin-top: 2px; }
+.garment-label .g-name { font-family: "Cormorant Garamond", serif; font-size: 1.35rem; line-height: 1.05; margin-top: 2px; }
 .garment-label .g-year { font-size: 9px; letter-spacing: 0.2em; margin-top: 6px; opacity: 0.5; }
 .garment-cta {
   margin-top: 10px; display: inline-flex; align-items: center; gap: 6px;

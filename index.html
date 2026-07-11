@@ -270,7 +270,8 @@
         <h2 class="reveal pop-text font-display text-[13vw] md:text-[6.5vw] leading-none">
           FROM BUD<br/><span class="italic text-plum pl-[6vw]">TO BLOOM</span>
         </h2>
-        <p class="reveal pop-text font-mincho mt-10 md:mt-56 max-w-xl text-sm md:text-base leading-loose" id="about-lead"></p>
+        <!-- 背景の地球儀「KOCHI」ラベルのすぐ下（グリッド1つ分下）に文頭が来る位置 -->
+        <p class="reveal pop-text font-mincho mt-10 md:mt-72 max-w-xl text-sm md:text-base leading-loose" id="about-lead"></p>
 
         <div class="reveal mt-14">
           <div id="profile-card" class="stitched relative max-w-3xl bg-paper/90 text-ink backdrop-blur-sm rounded-2xl p-6 md:p-10 flex flex-col md:flex-row gap-8 items-start">
@@ -359,23 +360,27 @@
     <!-- ===================== WORKS ===================== -->
     <section class="view" id="view-works">
       <div class="view-inner min-h-screen px-6 md:px-16 pt-28 md:pt-32 pb-16 flex flex-col">
-        <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-sand mb-4">02 — Works / From Japan to the World</p>
-        <h2 class="reveal pop-text font-display text-[13vw] md:text-[6.5vw] leading-none">
-          TAILORED<br/><span class="italic text-sand pl-[6vw]">WORKS</span>
-        </h2>
-        <p class="reveal pop-text font-mincho mt-6 max-w-xl text-sm md:text-base leading-loose opacity-90" id="works-lead"></p>
-        <p class="reveal mt-3 text-[10px] tracking-widest2 uppercase opacity-60 flex items-center gap-2">
-          <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="currentColor" transform="rotate(45 12 12)"/></svg>
-          地球儀のピンをクリック — その国のWorkへ飛べます
-        </p>
-
-        <!-- 地球儀ステージ（背景のピンをクリックするための余白） -->
-        <div class="reveal flex items-end justify-center pb-4" style="height:44vh" aria-hidden="true">
-          <p class="text-[10px] tracking-widest2 uppercase opacity-50 flex flex-col items-center gap-2">
-            <span>Closet Archive</span>
-            <svg viewBox="0 0 24 24" class="w-4 h-4 animate-bounce"><path d="M12 4v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- 見出しブロック：ピンと重なったときの判定に使うので id と w-fit を付ける -->
+        <div id="works-head" class="w-fit max-w-full">
+          <p class="reveal sec-kicker text-xs tracking-widest2 uppercase text-sand mb-4">02 — Works / From Japan to the World</p>
+          <h2 class="reveal pop-text font-display text-[13vw] md:text-[6.5vw] leading-none">
+            TAILORED<br/><span class="italic text-sand pl-[6vw]">WORKS</span>
+          </h2>
+          <p class="reveal pop-text font-mincho mt-6 max-w-xl text-sm md:text-base leading-loose opacity-90" id="works-lead"></p>
+          <p class="reveal mt-3 text-[10px] tracking-widest2 uppercase opacity-60 flex items-center gap-2">
+            <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="currentColor" transform="rotate(45 12 12)"/></svg>
+            地球儀のピンをクリック — その国のWorkへ飛べます
           </p>
         </div>
+
+        <!-- 地球儀ステージ：ここをスクロールしている間は何も被らず、
+             ピンと国名・都市名だけを概観して、タップでWorkへ飛べる -->
+        <div class="reveal" style="height:120vh" aria-hidden="true"></div>
+
+        <p class="reveal text-[10px] tracking-widest2 uppercase opacity-50 flex flex-col items-center gap-2 mb-6" aria-hidden="true">
+          <span>Closet Archive</span>
+          <svg viewBox="0 0 24 24" class="w-4 h-4 animate-bounce"><path d="M12 4v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </p>
 
         <p class="reveal text-[10px] tracking-widest2 uppercase opacity-50 flex items-center gap-2">
           <svg viewBox="0 0 24 24" class="w-4 h-4"><path d="M4 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>

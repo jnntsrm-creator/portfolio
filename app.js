@@ -505,8 +505,37 @@ function enterView(name) {
   gsap.fromTo(items, { y: 40, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: "power3.out", overwrite: true, clearProps: "transform" });
 
+  hideWorksHint();
   if (name === "about") refreshFlower();
-  if (name === "works") { const t = document.getElementById("closet"); if (t) t.scrollLeft = 0; }
+  if (name === "works") { const t = document.getElementById("closet"); if (t) t.scrollLeft = 0; showWorksHint(); }
+}
+
+/* WORKS の案内トースト：中央に一度だけ出して、数秒 or 最初の操作で消す */
+let hintTimer = 0;
+function showWorksHint() {
+  const hint = document.getElementById("works-hint");
+  if (!hint) return;
+  clearTimeout(hintTimer);
+  // 表示はフライト演出が終わって落ち着いてから
+  hintTimer = setTimeout(() => {
+    hint.classList.add("is-shown");
+    const dismiss = () => {
+      hint.classList.remove("is-shown");
+      window.removeEventListener("wheel", dismiss);
+      window.removeEventListener("pointerdown", dismiss);
+      window.removeEventListener("touchstart", dismiss);
+    };
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(dismiss, 4200);
+    window.addEventListener("wheel", dismiss, { once: true, passive: true });
+    window.addEventListener("pointerdown", dismiss, { once: true });
+    window.addEventListener("touchstart", dismiss, { once: true, passive: true });
+  }, 500);
+}
+function hideWorksHint() {
+  const hint = document.getElementById("works-hint");
+  if (hint) hint.classList.remove("is-shown");
+  clearTimeout(hintTimer);
 }
 
 function updateNav(name, instant = false) {

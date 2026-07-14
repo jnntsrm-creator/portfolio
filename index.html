@@ -275,7 +275,7 @@
         <p class="reveal pop-text font-mincho mt-10 md:mt-[31vh] max-w-xl text-sm md:text-base leading-loose" id="about-lead"></p>
 
         <div class="reveal mt-14">
-          <div id="profile-card" class="stitched relative max-w-3xl bg-paper/90 text-ink backdrop-blur-sm rounded-2xl p-6 md:p-10 flex flex-col md:flex-row gap-8 items-start">
+          <div id="profile-card" class="stitched relative max-w-3xl bg-paper text-ink rounded-2xl p-6 md:p-10 flex flex-col md:flex-row gap-8 items-start">
             <div class="shrink-0 w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden ring-4 ring-cream shadow-lg rotate-[-3deg]">
               <img id="profile-avatar" src="" alt="profile" class="w-full h-full object-cover" />
             </div>
@@ -370,14 +370,14 @@
           <p class="reveal pop-text font-mincho mt-6 max-w-xl text-sm md:text-base leading-loose opacity-90" id="works-lead"></p>
         </div>
 
-        <!-- 地球儀ステージ：ここをスクロールしている間は何も被らず、ピンと国名・
-             都市名だけを概観できる。案内文は地球儀の中央にスティッキー配置する -->
-        <div class="reveal relative" style="height:120vh">
-          <p class="works-globe-hint">
-            <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0"><path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="currentColor" transform="rotate(45 12 12)"/></svg>
-            地球儀のピンをクリック — その国のWorkへ飛べます
-          </p>
-        </div>
+        <!-- 案内トースト：地球儀の中央に一度だけ出て、数秒 or 最初の操作で消える -->
+        <p class="works-globe-hint" id="works-hint" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0"><path d="M12,2 L14,9 L22,13 L14,13 L12,22 L10,13 L2,13 L10,9 Z" fill="currentColor" transform="rotate(45 12 12)"/></svg>
+          ピンをタップして各国の活動へ
+        </p>
+
+        <!-- 地球儀ステージ：スクロール余白。ここではピンと国名・都市名だけを概観できる -->
+        <div class="reveal" style="height:120vh" aria-hidden="true"></div>
 
         <p class="reveal text-[10px] tracking-widest2 uppercase opacity-50 flex flex-col items-center gap-2 mb-6" aria-hidden="true">
           <span>Closet Archive</span>

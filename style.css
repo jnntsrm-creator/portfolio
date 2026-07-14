@@ -355,6 +355,33 @@ body[data-view="about"] #petal-field { display: block; }
 }
 .tl-item:hover .tl-cta { opacity: 1; gap: 10px; }
 
+/* WORKS 地球儀ステージの案内文：地球儀の中央にスティッキーで留まる。
+   pointer-events:none でピンのクリックを妨げない */
+.works-globe-hint {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  width: max-content;
+  max-width: 88vw;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 20px;
+  border: 1px solid rgba(245, 240, 230, 0.18);
+  border-radius: 9999px;
+  background: rgba(35, 32, 26, 0.4);
+  backdrop-filter: blur(3px);
+  color: var(--fg);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  pointer-events: none;
+  text-align: center;
+}
+
 /* ============================================================
    WORKS：クローゼット
 ============================================================ */
